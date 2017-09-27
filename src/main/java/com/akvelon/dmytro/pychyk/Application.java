@@ -1,4 +1,4 @@
-package akvelon.com;
+package com.akvelon.dmytro.pychyk;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,9 +1,8 @@
-package akvelon.com.dao;
+package com.akvelon.dmytro.pychyk.service;
 
 import java.util.List;
 
-public interface Dao <T> {
-
+public interface Service<T> {
     List<T> selectMostPopular();
 
     long add(T object);

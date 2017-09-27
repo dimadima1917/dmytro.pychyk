@@ -1,7 +1,7 @@
-package akvelon.com.service;
+package com.akvelon.dmytro.pychyk.service;
 
-import akvelon.com.dao.Dao;
-import akvelon.com.domain.Bicycle;
+import com.akvelon.dmytro.pychyk.dao.Dao;
+import com.akvelon.dmytro.pychyk.domain.Bicycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
@@ -17,8 +17,8 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     }
 
     @Override
-    public void add(Bicycle object) {
-
+    public long add(Bicycle bicycle) {
+        return bicycleDao.add(bicycle);
     }
 
     @Override
