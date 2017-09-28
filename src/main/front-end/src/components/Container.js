@@ -1,33 +1,54 @@
 import React, {Component} from "react";
 import BicycleList from "./Bicycle/BicycleList";
-import {Button, Col, Grid, Row} from "react-bootstrap";
+import {Button, Col, Grid, Row, Form} from "react-bootstrap";
 import CreateProductModal from "../modals/CreateProductModal";
-import {loadAllProducts} from "../api/cart";
+import {loadAllProductsRequest,load5MostPopular} from "../api/bikes";
 
 
-class Container extends Component{
+class Container extends Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
             products: [],
+            displayedProducts: [],
+            isToogleOn: true,
             showCreateModal: false,
         }
+        this.loadProductListProducts = this.loadProductListProducts.bind(this);
     }
 
-    componentDidMount() {
-        loadAllProducts()
-            .then((response) => { //successCallback
-                let products = response;
-
+    loadProductListProducts() {
+        loadAllProductsRequest()
+            .then((products) => { //successCallback
                 this.setState({
                     products: products,
-                })
+                    displayedProducts: products
+                });
+                return null;
             })
             .catch((error) => { //errror callback
                 console.error(error);
             });
+    }
+
+    load5MostPopularBicycles() {
+        load5MostPopular()
+            .then((products) => { //successCallback
+                this.setState({
+                    products: products,
+                    displayedProducts: products
+                });
+                return null;
+            })
+            .catch((error) => { //errror callback
+                console.error(error);
+            });
+    }
+
+    componentDidMount() {
+        this.load5MostPopularBicycles();
     }
 
     showCreateModal(e) {
@@ -36,17 +57,55 @@ class Container extends Component{
         });
     }
 
-    render(){
-        return(
+    searchHandler(e) {
+        const searchQuery = e.target.value.toLowerCase();
+        const displayedProducts = this.state.products.filter(function (el) {
+            const searchValue = el.name.toLowerCase();
+            return searchValue.indexOf(searchQuery) !== -1;
+        });
+        this.setState({
+            displayedProducts: displayedProducts
+        });
+        console.log(displayedProducts);
+    }
+
+    handleClick() {
+        if (this.state.isToogleOn) {
+            this.setState({
+                    isToogleOn: false,
+                    displayedProducts: this.state.products
+                }
+            );
+            this.load5MostPopularBicycles()
+        } else {
+            this.setState({
+                    isToogleOn: true,
+                    displayedProducts: this.state.products
+
+                }
+            );
+            this.loadProductListProducts()
+        }
+
+    }
+
+    render() {
+        return (
+
             <Grid fluid>
                 <Row>
                     <Col md={7}>
-                        <BicycleList products={this.state.products}/>
+                        <button type="button" className="btn btn-primary" onClick={this.handleClick.bind(this)}>
+                            {this.state.isToogleOn ? 'All BICYCLES' : 'TOP 5'}
+                        </button>
                     </Col>
                 </Row>
-
-                <Button bsStyle="primary" onClick={this.showCreateModal.bind(this)}>Create new product</Button>
-
+                <Row>
+                    <Col md={7}>
+                        <BicycleList displayedProducts={this.state.displayedProducts}
+                                     searchHandler={this.searchHandler.bind(this)}/>
+                    </Col>
+                </Row>
             </Grid>
         )
     }

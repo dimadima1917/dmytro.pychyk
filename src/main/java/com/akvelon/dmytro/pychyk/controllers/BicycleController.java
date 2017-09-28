@@ -19,8 +19,14 @@ public class BicycleController {
     private Service<Bicycle> bicycleService;
 
 
+    @RequestMapping(value = "/showAll",method = RequestMethod.GET)
+    public List<Bicycle> showAllBicycle(){
+        return bicycleService.selectAll();
+    }
+
+
     //request 5 most Popular Bicycle
-    @RequestMapping(value = "/show5MostPopular",method = RequestMethod.GET)
+    @RequestMapping(value = "/",method = RequestMethod.GET)
     public List<Bicycle> showMostPopularBicycle(){
         return bicycleService.selectMostPopular();
     }

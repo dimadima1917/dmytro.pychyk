@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static com.akvelon.dmytro.pychyk.dao.SQLs.ADD;
+import static com.akvelon.dmytro.pychyk.dao.SQLs.SELECT_ALL;
 import static com.akvelon.dmytro.pychyk.dao.SQLs.SELECT_MOST_POPULAR;
 
 @Repository
@@ -28,6 +29,11 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
     @Override
     public List<Bicycle> selectMostPopular() {
        return jdbcTemplate.query(SELECT_MOST_POPULAR, new BeanPropertyRowMapper<Bicycle>(Bicycle.class));
+    }
+
+    @Override
+    public List<Bicycle> selectAll() {
+        return jdbcTemplate.query(SELECT_ALL,new BeanPropertyRowMapper<Bicycle>(Bicycle.class));
     }
 
     @Override
@@ -52,7 +58,6 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
 
     @Override
     public void delete(int id) {
-
     }
 
     @Override

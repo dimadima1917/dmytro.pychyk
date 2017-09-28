@@ -4,9 +4,14 @@ import {Button} from "react-bootstrap";
 
 const BicycleTable = ({product}) =>
     <tr>
-        <td>{product.id}</td>
+        <td>{product.productId}</td>
         <td>{product.name}</td>
-        <td>{product.price}</td>
+        <td>{product.productNumber}</td>
+        <td>{product.color}</td>
+        <td>{product.standartCost}</td>
+        <td>{product.size}</td>
+        <td>{product.style}</td>
+
         <td>
             <Button bsStyle="success" onClick={() => addToCart(product)}>Delete</Button>
         </td>

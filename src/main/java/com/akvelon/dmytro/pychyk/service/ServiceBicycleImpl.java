@@ -17,6 +17,11 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     }
 
     @Override
+    public List<Bicycle> selectAll() {
+        return bicycleDao.selectAll();
+    }
+
+    @Override
     public long add(Bicycle bicycle) {
         return bicycleDao.add(bicycle);
     }

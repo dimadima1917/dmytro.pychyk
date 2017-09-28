@@ -3,7 +3,7 @@ package com.akvelon.dmytro.pychyk.domain;
 
 public class Bicycle {
 
-    private int id;
+    private int productId;
 
     private String name;
 
@@ -22,7 +22,10 @@ public class Bicycle {
     }
 
     //constructor with parameters
-    public Bicycle(String name, String productNumber, String color, double standartCost, String size, String style) {
+
+
+    public Bicycle(int productId, String name, String productNumber, String color, double standartCost, String size, String style) {
+        this.productId = productId;
         this.name = name;
         this.productNumber = productNumber;
         this.color = color;
@@ -32,12 +35,14 @@ public class Bicycle {
     }
 
     //getters and setters
-    public int getId() {
-        return id;
+
+
+    public int getProductId() {
+        return productId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getName() {

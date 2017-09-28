@@ -1,24 +1,34 @@
 import React, {Component} from "react";
-import {Table} from "react-bootstrap";
+import {Table,} from "react-bootstrap";
 import BicycleTable from "./BicycleTable";
 
 
-const BicycleList = ({products}) =>
+
+
+
+const BicycleList = ({displayedProducts,searchHandler}) =>
+
     <div>
-        <h4>Top 5</h4>
+        <input type="text" className="search-query mac-style" placeholder="Search"onChange={(e) => searchHandler(e, displayedProducts)}/>
+        <h4>Bikes</h4>
         <Table striped bordered condensed hover>
             <thead>
             <tr>
-                <th>#</th>
-                <th>Product Name</th>
-                <th>Product Price</th>
+                <th>id</th>
+                <th>Name</th>
+                <th>Product Number</th>
+                <th>Color</th>
+                <th>Standart Cost</th>
+                <th>Size</th>
+                <th>Style</th>
                 <th>{/*empty*/}</th>
             </tr>
             </thead>
             <tbody>
             {
-                products.map((item, index) => <BicycleTable key={index}
-                                                            product={item}/>)
+                displayedProducts.map((item, index) => <BicycleTable key={index}
+                                                            product={item}
+                                                            />)
             }
             </tbody>
         </Table>
