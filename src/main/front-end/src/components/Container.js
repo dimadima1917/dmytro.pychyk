@@ -13,7 +13,7 @@ class Container extends Component {
         this.state = {
             products: [],
             displayedProducts: [],
-            isToogleOn: true,
+            isToogleOn: false,
             showCreateModal: false,
         }
         this.loadProductListProducts = this.loadProductListProducts.bind(this);
@@ -71,6 +71,7 @@ class Container extends Component {
 
     handleClick() {
         if (this.state.isToogleOn) {
+            console.log(this.state.isToogleOn)
             this.setState({
                     isToogleOn: false,
                     displayedProducts: this.state.products
@@ -84,6 +85,7 @@ class Container extends Component {
 
                 }
             );
+            console.log(this.state.isToogleOn)
             this.loadProductListProducts()
         }
 
@@ -96,14 +98,16 @@ class Container extends Component {
                 <Row>
                     <Col md={7}>
                         <button type="button" className="btn btn-primary" onClick={this.handleClick.bind(this)}>
-                            {this.state.isToogleOn ? 'All BICYCLES' : 'TOP 5'}
+                            {this.state.isToogleOn ? 'SHOW TOP 5' : 'SHOW ALL BICYCLES'}
                         </button>
                     </Col>
                 </Row>
                 <Row>
-                    <Col md={7}>
+                    <Col>
                         <BicycleList displayedProducts={this.state.displayedProducts}
-                                     searchHandler={this.searchHandler.bind(this)}/>
+                                     searchHandler={this.searchHandler.bind(this)}
+                                     isToogleOn={this.state.isToogleOn}
+                        />
                     </Col>
                 </Row>
             </Grid>

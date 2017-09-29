@@ -6,11 +6,11 @@ import BicycleTable from "./BicycleTable";
 
 
 
-const BicycleList = ({displayedProducts,searchHandler}) =>
+const BicycleList = ({displayedProducts,searchHandler,isToogleOn}) =>
 
     <div>
         <input type="text" className="search-query mac-style" placeholder="Search"onChange={(e) => searchHandler(e, displayedProducts)}/>
-        <h4>Bikes</h4>
+        <h4>{isToogleOn ? 'All BICYCLES' : 'TOP 5'}</h4>
         <Table striped bordered condensed hover>
             <thead>
             <tr>
