@@ -1,16 +1,17 @@
 import React, {Component} from "react";
 import {Table,} from "react-bootstrap";
 import BicycleTable from "./BicycleTable";
+import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../../constants/bikeConstants";
 
 
 
 
 
-const BicycleList = ({displayedProducts,searchHandler,isToogleOn}) =>
+const BicycleList = ({displayedBicycles,searchHandler,isToogleOn}) =>
 
     <div>
-        <input type="text" className="search-query mac-style" placeholder="Search"onChange={(e) => searchHandler(e, displayedProducts)}/>
-        <h4>{isToogleOn ? 'All BICYCLES' : 'TOP 5'}</h4>
+        <input type="text" className="search-query mac-style" placeholder="Search"onChange={(e) => searchHandler(e, displayedBicycles)}/>
+        <h4>{isToogleOn ? SHOW_ALL_BICYCLES : SHOW_TOP_FIVE_BICYCLES}</h4>
         <Table striped bordered condensed hover>
             <thead>
             <tr>
@@ -26,8 +27,8 @@ const BicycleList = ({displayedProducts,searchHandler,isToogleOn}) =>
             </thead>
             <tbody>
             {
-                displayedProducts.map((item, index) => <BicycleTable key={index}
-                                                            product={item}
+                displayedBicycles.map((item, index) => <BicycleTable key={index}
+                                                            bicycle={item}
                                                             />)
             }
             </tbody>

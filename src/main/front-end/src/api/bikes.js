@@ -8,6 +8,7 @@ const DELETE = 'DELETE';
 
 const GET_ALL_PRODUCTS_URL = "http://localhost:8080/showAll";
 const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/";
+const CREATE_BICYCLE_URL = "http://localhost:8080/add";
 
 
 export const loadAllProductsRequest = () => {
@@ -33,9 +34,26 @@ export const load5MostPopular = () => {
         url: GET_ALL_5_MOST_POPULAR_URL,
         headers: {
             'Accept': 'application/json',
+            'Content-Type': 'application/json;charset=UTF-8',
+            "Access-Control-Allow-Origin": "*"
+        },
+        crossDomain: true,
+        responseType: 'json'
+    }).then(response => {
+        return response.data
+    })
+};
+
+export const createProductRequest = (bicycle) => {
+    return axios({
+        method: POST,
+        url: CREATE_BICYCLE_URL,
+        headers: {
+            'Accept': 'application/json',
             'Content-Type': 'application/json',
             "Access-Control-Allow-Origin": "*"
         },
+        data: bicycle,
         crossDomain: true,
         responseType: 'json'
     }).then(response => {

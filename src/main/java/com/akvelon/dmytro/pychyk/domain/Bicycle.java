@@ -17,12 +17,6 @@ public class Bicycle {
 
     private String style;
 
-    //constructor without parameters
-    public Bicycle() {
-    }
-
-    //constructor with parameters
-
 
     public Bicycle(int productId, String name, String productNumber, String color, double standartCost, String size, String style) {
         this.productId = productId;
@@ -34,9 +28,12 @@ public class Bicycle {
         this.style = style;
     }
 
+    //constructor without parameters
+    public Bicycle() {
+    }
+
+
     //getters and setters
-
-
     public int getProductId() {
         return productId;
     }
@@ -91,5 +88,18 @@ public class Bicycle {
 
     public void setStyle(String style) {
         this.style = style;
+    }
+
+    @Override
+    public String toString() {
+        return "Bicycle{" +
+                "productId=" + productId +
+                ", name='" + name + '\'' +
+                ", productNumber='" + productNumber + '\'' +
+                ", color='" + color + '\'' +
+                ", standartCost=" + standartCost +
+                ", size='" + size + '\'' +
+                ", style='" + style + '\'' +
+                '}';
     }
 }

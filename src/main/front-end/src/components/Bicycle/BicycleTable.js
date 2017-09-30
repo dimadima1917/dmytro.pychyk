@@ -2,18 +2,18 @@ import React, {Component} from "react";
 import {Button} from "react-bootstrap";
 
 
-const BicycleTable = ({product}) =>
+const BicycleTable = ({bicycle}) =>
     <tr>
-        <td>{product.productId}</td>
-        <td>{product.name}</td>
-        <td>{product.productNumber}</td>
-        <td>{product.color}</td>
-        <td>{product.standartCost}</td>
-        <td>{product.size}</td>
-        <td>{product.style}</td>
+        <td>{bicycle.productId}</td>
+        <td>{bicycle.name}</td>
+        <td>{bicycle.productNumber}</td>
+        <td>{bicycle.color}</td>
+        <td>{bicycle.standartCost}</td>
+        <td>{bicycle.size}</td>
+        <td>{bicycle.style}</td>
 
         <td>
-            <Button bsStyle="success" onClick={() => addToCart(product)}>Delete</Button>
+            <Button bsStyle="success" onClick={() => addToCart(bicycle)}>Delete</Button>
         </td>
     </tr>
 

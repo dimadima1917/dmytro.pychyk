@@ -3,6 +3,7 @@ package com.akvelon.dmytro.pychyk.service;
 import com.akvelon.dmytro.pychyk.dao.Dao;
 import com.akvelon.dmytro.pychyk.domain.Bicycle;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.List;
 
 @org.springframework.stereotype.Service
@@ -27,7 +28,7 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     }
 
     @Override
-    public void delete() {
-
+    public void delete(int id) {
+        bicycleDao.delete(id);
     }
 }

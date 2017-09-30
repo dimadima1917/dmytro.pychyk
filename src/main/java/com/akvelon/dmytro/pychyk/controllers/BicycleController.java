@@ -3,10 +3,7 @@ package com.akvelon.dmytro.pychyk.controllers;
 import com.akvelon.dmytro.pychyk.domain.Bicycle;
 import com.akvelon.dmytro.pychyk.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,8 +28,14 @@ public class BicycleController {
         return bicycleService.selectMostPopular();
     }
 
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
+    public void delete(@PathVariable("id") int id){
+        bicycleService.delete(id);
+    }
+
     @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public long add(Bicycle bicycle){
-        return 0;
+    public long add(@RequestBody Bicycle bicycle){
+        System.out.println(bicycle);
+        return bicycleService.add(bicycle);
     }
 }
