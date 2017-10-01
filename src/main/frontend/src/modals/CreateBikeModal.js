@@ -15,7 +15,6 @@ class CreateBikeModal extends Component {
     constructor(props) {
         super(props);
         this.baseState = this.state = {
-
             name: '',
             productNumber: '',
             color: '',

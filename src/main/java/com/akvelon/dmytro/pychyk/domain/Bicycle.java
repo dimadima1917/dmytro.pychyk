@@ -11,22 +11,13 @@ public class Bicycle {
 
     private String color;
 
-    private double standartCost;
+    private double standardCost;
 
     private String size;
 
     private String style;
 
 
-    public Bicycle(int productId, String name, String productNumber, String color, double standartCost, String size, String style) {
-        this.productId = productId;
-        this.name = name;
-        this.productNumber = productNumber;
-        this.color = color;
-        this.standartCost = standartCost;
-        this.size = size;
-        this.style = style;
-    }
 
     //constructor without parameters
     public Bicycle() {
@@ -66,12 +57,12 @@ public class Bicycle {
         this.color = color;
     }
 
-    public double getStandartCost() {
-        return standartCost;
+    public double getStandardCost() {
+        return standardCost;
     }
 
-    public void setStandartCost(double standartCost) {
-        this.standartCost = standartCost;
+    public void setStandardCost(double standardCost) {
+        this.standardCost = standardCost;
     }
 
     public String getSize() {
@@ -97,7 +88,7 @@ public class Bicycle {
                 ", name='" + name + '\'' +
                 ", productNumber='" + productNumber + '\'' +
                 ", color='" + color + '\'' +
-                ", standartCost=" + standartCost +
+                ", standardCost=" + standardCost +
                 ", size='" + size + '\'' +
                 ", style='" + style + '\'' +
                 '}';

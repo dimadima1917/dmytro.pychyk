@@ -12,5 +12,6 @@ public interface Dao <T> {
 
     void delete(int id);
 
-    List<T> search();
+    T searchByName(String name);
+
 }

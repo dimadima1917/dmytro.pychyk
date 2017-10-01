@@ -45,7 +45,7 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
                 preparedStatement.setString(1, bicycle.getName());
                 preparedStatement.setString(2, bicycle.getProductNumber());
                 preparedStatement.setString(3, bicycle.getColor());
-                preparedStatement.setDouble(4, bicycle.getStandartCost());
+                preparedStatement.setDouble(4, bicycle.getStandardCost());
                 preparedStatement.setString(5, bicycle.getSize());
                 preparedStatement.setString(6, bicycle.getStyle());
                 preparedStatement.setString(7, uuid.toString());
@@ -57,11 +57,27 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
 
     @Override
     public void delete(int productId) {
-        this.jdbcTemplate.update(DELETE_BY_ID);
+        jdbcTemplate.update(delBillofmaterials, productId);
+        jdbcTemplate.update(delb2Billofmaterials, productId);
+        jdbcTemplate.update(delProductcosthistory, productId);
+        jdbcTemplate.update(delProductdocument, productId);
+        jdbcTemplate.update(delProductinventory, productId);
+        jdbcTemplate.update(delProductlistpricehistory, productId);
+        jdbcTemplate.update(delProductproductphoto, productId);
+        jdbcTemplate.update(delProductreview, productId);
+        jdbcTemplate.update(delProductvendor, productId);
+        jdbcTemplate.update(delPurchaseorderdetail, productId);
+        jdbcTemplate.update(delSalesorderdetail, productId);
+        jdbcTemplate.update(delSpecialofferproduct, productId);
+        jdbcTemplate.update(delShoppingcartitem, productId);
+        jdbcTemplate.update(delTransactionhistory, productId);
+        jdbcTemplate.update(delWorkorderrouting, productId);
+        jdbcTemplate.update(delWorkorder, productId);
+        jdbcTemplate.update(delProduct, productId);
     }
 
     @Override
-    public List<Bicycle> search() {
-        return null;
+    public Bicycle searchByName(String name) {
+        return this.jdbcTemplate.queryForObject(FIND_BY_NAME, new BeanPropertyRowMapper<Bicycle>(Bicycle.class),name);
     }
 }

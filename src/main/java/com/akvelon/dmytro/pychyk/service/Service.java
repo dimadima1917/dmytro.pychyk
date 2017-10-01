@@ -11,4 +11,6 @@ public interface Service<T> {
     long add(T object);
 
     void delete(int id);
+
+    T searchByName(String name);
 }

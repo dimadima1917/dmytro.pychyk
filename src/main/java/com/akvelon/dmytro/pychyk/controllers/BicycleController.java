@@ -22,13 +22,18 @@ public class BicycleController {
     }
 
 
+    @RequestMapping(value = "/search/{name}",method = RequestMethod.GET)
+    public Bicycle searchByName(@PathVariable("name") String name){
+        return bicycleService.searchByName(name);
+    }
+
     //request 5 most Popular Bicycle
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public List<Bicycle> showMostPopularBicycle(){
         return bicycleService.selectMostPopular();
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
     public void delete(@PathVariable("id") int id){
         bicycleService.delete(id);
     }
@@ -37,5 +42,7 @@ public class BicycleController {
     public long add(@RequestBody Bicycle bicycle){
         System.out.println(bicycle);
         return bicycleService.add(bicycle);
+
+
     }
 }

@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import BicycleList from "./Bicycle/BicycleList";
 import {Button, Col, Grid, Row, Form} from "react-bootstrap";
-import {loadAllProductsRequest, load5MostPopular, createProductRequest} from "../api/bikes";
+import {loadAllProductsRequest, load5MostPopular, createProductRequest, deleteBicyclesRequest} from "../api/bikes";
 import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../constants/bikeConstants";
 import CreateBikeModal from "../modals/CreateBikeModal";
+import InfoBicycleModal from "../modals/InfoBicycleModal";
 
 
 class Container extends Component {
@@ -12,10 +13,12 @@ class Container extends Component {
         super(props);
 
         this.state = {
+            bike: {},
             bikes: [],
             displayedBikes: [],
             isToogleOn: false,
             showCreateModal: false,
+            showModalInfo: false
         }
         this.loadProductListProducts = this.loadProductListProducts.bind(this);
     }
@@ -27,6 +30,10 @@ class Container extends Component {
 
     reloadAllProducts() {
         this.loadProductListProducts();
+    }
+
+    reloadFiveMostPopularProducts() {
+        this.load5MostPopularBicycles();
     }
 
 
@@ -65,9 +72,9 @@ class Container extends Component {
     }
 
     searchHandler(e) {
-        const searchQuery = e.target.value.toLowerCase();
+        const searchQuery = e.target.value.toLowerCase().trim();
         const displayedProducts = this.state.bikes.filter(function (el) {
-            const searchValue = el.name.toLowerCase();
+            const searchValue = el.name.toLowerCase().trim();
             return searchValue.indexOf(searchQuery) !== -1;
         });
         this.setState({
@@ -75,11 +82,13 @@ class Container extends Component {
         });
     }
 
-    onCloseCreateModal(e) {
+    onCloseModal(e) {
         this.setState({
-            showCreateModal: false
+            showCreateModal: false,
+            showModalInfo: false
         })
     }
+
 
     handleClick() {
         if (this.state.isToogleOn) {
@@ -107,30 +116,65 @@ class Container extends Component {
         }
     }
 
+    deleteBicycleHandler(bicyclesId) {
+        if (bicyclesId && this.state.isToogleOn) {
+            deleteBicyclesRequest(bicyclesId)
+                .then((response) => this.reloadAllProducts());
+        } else {
+            deleteBicyclesRequest(bicyclesId)
+                .then((response) => this.reloadFiveMostPopularProducts());
+        }
+    }
+
+    showModalInfo(bike) {
+        this.setState({
+            bike: bike,
+            showModalInfo: true
+        });
+    }
+
     render() {
         return (
 
             <Grid fluid>
-                <Row>
-                    <Col md={7}>
-                        <button type="button" className="btn btn-primary" onClick={this.handleClick.bind(this)}>
-                            {this.state.isToogleOn ? SHOW_TOP_FIVE_BICYCLES : SHOW_ALL_BICYCLES}
-                        </button>
-                        <button type="button" className="btn btn-primary" onClick={this.showCreateModal.bind(this)}>
-                            CREATE NEW BICYCLES
-                        </button>
+                <nav className="navbar navbar-default">
+                    <div className="container-fluid">
+                        <div className="navbar-header">
+                            <div className="btn-group" role="group" aria-label="...">
+                                <button type="button" className="btn btn-primary navbar-btn"
+                                        onClick={this.showCreateModal.bind(this)}>
+                                    CREATE NEW BICYCLES
+                                </button>
+                                <button type="button" className="btn btn-default navbar-btn" onClick={this.handleClick.bind(this)}>
+                                    {this.state.isToogleOn ? SHOW_TOP_FIVE_BICYCLES : SHOW_ALL_BICYCLES}
+                                </button>
+                            </div>
+                        </div>
+                        <form className="navbar-form navbar-right">
+                            <div className="form-group">
+                                <input onChange={this.searchHandler.bind(this)} type="text" className="form-control"
+                                       placeholder="Search"/>
+                            </div>
+                        </form>
+                    </div>
+                </nav>
 
-                        <CreateBikeModal showModal={this.state.showCreateModal}
-                                         onClose={this.onCloseCreateModal.bind(this)}
-                                         createBicycleHandler={this.createBicycleHandler.bind(this)}/>
+                <CreateBikeModal showModal={this.state.showCreateModal}
+                                 onClose={this.onCloseModal.bind(this)}
+                                 createBicycleHandler={this.createBicycleHandler.bind(this)}/>
 
-                    </Col>
-                </Row>
+                <InfoBicycleModal showModalInfo={this.state.showModalInfo}
+                                  onClose={this.onCloseModal.bind(this)}
+                                  bicycle={this.state.bike}
+                />
+
                 <Row>
-                    <Col>
+                    <Col md={12}>
                         <BicycleList displayedBicycles={this.state.displayedBikes}
                                      searchHandler={this.searchHandler.bind(this)}
                                      isToogleOn={this.state.isToogleOn}
+                                     deleteBicycle={this.deleteBicycleHandler.bind(this)}
+                                     showInfo={this.showModalInfo.bind(this)}
                         />
                     </Col>
                 </Row>

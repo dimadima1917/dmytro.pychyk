@@ -31,4 +31,9 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     public void delete(int id) {
         bicycleDao.delete(id);
     }
+
+    @Override
+    public Bicycle searchByName(String name) {
+        return bicycleDao.searchByName(name);
+    }
 }
