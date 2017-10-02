@@ -16,33 +16,36 @@ public class BicycleController {
     private Service<Bicycle> bicycleService;
 
 
-    @RequestMapping(value = "/showAll",method = RequestMethod.GET)
-    public List<Bicycle> showAllBicycle(){
+    @RequestMapping(value = "/showAll", method = RequestMethod.GET)
+    public List<Bicycle> showAllBicycle() {
         return bicycleService.selectAll();
     }
 
 
-    @RequestMapping(value = "/search/{name}",method = RequestMethod.GET)
-    public Bicycle searchByName(@PathVariable("name") String name){
-        return bicycleService.searchByName(name);
+    @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
+    public Bicycle searchByName(@PathVariable("id") long id) {
+        return bicycleService.searchById(id);
     }
 
     //request 5 most Popular Bicycle
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public List<Bicycle> showMostPopularBicycle(){
+    @RequestMapping(value = "/top5", method = RequestMethod.GET)
+    public List<Bicycle> showMostPopularBicycle() {
         return bicycleService.selectMostPopular();
     }
 
-    @RequestMapping(value = "/delete/{id}",method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") int id){
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable("id") int id) {
         bicycleService.delete(id);
     }
 
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
-    public long add(@RequestBody Bicycle bicycle){
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public long add(@RequestBody Bicycle bicycle) {
         System.out.println(bicycle);
         return bicycleService.add(bicycle);
+    }
 
-
+    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET)
+    public Bicycle searchByName(@PathVariable String name) {
+        return bicycleService.searchByName(name);
     }
 }

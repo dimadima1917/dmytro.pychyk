@@ -18,7 +18,7 @@ class CreateBikeModal extends Component {
             name: '',
             productNumber: '',
             color: '',
-            standartCost: '',
+            standardCost: '',
             size: '',
             style: '',
             showModal: false
@@ -45,9 +45,9 @@ class CreateBikeModal extends Component {
     onCreate(e) {
         let formData = {
             name: this.state.nameRef.value || '',
-            productNumber: this.state.productNumberRef.value || '',
+            productNumber: this.state.NumberRef.value || '',
             color: this.state.colorRef.value || '',
-            standartCost: this.state.standartCostRef.value || 0,
+            standardCost: this.state.standardCostRef.value || 0,
             size: this.state.sizeRef.value || '',
             style: this.state.styleRef.value || '',
         };
@@ -60,7 +60,7 @@ class CreateBikeModal extends Component {
         return (
             <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
                 <ModalHeader closeButton>
-                    <ModalTitle>Create New Product</ModalTitle>
+                    <ModalTitle>Create New Bicycle</ModalTitle>
                     <Form horizontal>
                         <FormGroup>
                             <Col smOffset={2} sm={3}>
@@ -69,21 +69,21 @@ class CreateBikeModal extends Component {
                             <Col sm={6}>
                                 <FormControl id="name"
                                              type="text"
-                                             placeholder="Product name"
+                                             placeholder="Name"
                                              maxLength="50"
                                              inputRef={ref => this.state.nameRef = ref}/>
                             </Col>
                         </FormGroup>
                         <FormGroup>
                             <Col smOffset={2} sm={3}>
-                                <ControlLabel>Product Number</ControlLabel>
+                                <ControlLabel>Number</ControlLabel>
                             </Col>
                             <Col sm={6}>
                                 <FormControl id="productNumber"
                                              type="text"
-                                             placeholder="Product Number"
+                                             placeholder="Number"
                                              maxLength="25"
-                                             inputRef={ref => this.state.productNumberRef = ref}
+                                             inputRef={ref => this.state.NumberRef = ref}
                                 />
                             </Col>
                         </FormGroup>
@@ -94,7 +94,7 @@ class CreateBikeModal extends Component {
                             <Col sm={6}>
                                 <FormControl id="color"
                                              type="text"
-                                             placeholder="Product color"
+                                             placeholder="Color"
                                              maxLength="15"
                                              inputRef={ref => this.state.colorRef = ref}
                                 />
@@ -105,11 +105,11 @@ class CreateBikeModal extends Component {
                                 <ControlLabel>Standart Cost</ControlLabel>
                             </Col>
                             <Col sm={6}>
-                                <FormControl id="standartCost"
+                                <FormControl id="standardCostRef"
                                              type="number"
                                              placeholder="Standart Cost"
                                              min="0"
-                                             inputRef={ref => this.state.standartCostRef = ref}
+                                             inputRef={ref => this.state.standardCostRef = ref}
                                 />
                             </Col>
                         </FormGroup>
@@ -120,7 +120,7 @@ class CreateBikeModal extends Component {
                             <Col sm={6}>
                                 <FormControl id="size"
                                              type="text"
-                                             placeholder="Product size"
+                                             placeholder="Size"
                                              maxLength="5"
                                              inputRef={ref => this.state.sizeRef = ref}
                                 />
@@ -133,7 +133,7 @@ class CreateBikeModal extends Component {
                             <Col sm={6}>
                                 <FormControl id="style"
                                              type="text"
-                                             placeholder="Product style"
+                                             placeholder="Style"
                                              maxLength="2"
                                              inputRef={ref => this.state.styleRef = ref}
                                 />

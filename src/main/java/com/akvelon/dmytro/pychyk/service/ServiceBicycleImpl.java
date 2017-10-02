@@ -24,12 +24,26 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
 
     @Override
     public long add(Bicycle bicycle) {
-        return bicycleDao.add(bicycle);
+        long addTrue = -1;
+
+        if (bicycle != null) {
+
+            addTrue = bicycleDao.add(bicycle);
+
+        } else {
+            return addTrue;
+        }
+        return addTrue;
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(long id) {
         bicycleDao.delete(id);
+    }
+
+    @Override
+    public Bicycle searchById(long id) {
+        return bicycleDao.searchById(id);
     }
 
     @Override

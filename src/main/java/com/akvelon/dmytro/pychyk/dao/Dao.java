@@ -10,7 +10,9 @@ public interface Dao <T> {
 
     long add(T object);
 
-    void delete(int id);
+    void delete(long id);
+
+    T searchById(long id);
 
     T searchByName(String name);
 

@@ -23,6 +23,15 @@ public class Bicycle {
     public Bicycle() {
     }
 
+    public Bicycle(int productId, String name, String productNumber, String color, double standardCost, String size, String style) {
+        this.productId = productId;
+        this.name = name;
+        this.productNumber = productNumber;
+        this.color = color;
+        this.standardCost = standardCost;
+        this.size = size;
+        this.style = style;
+    }
 
     //getters and setters
     public int getProductId() {

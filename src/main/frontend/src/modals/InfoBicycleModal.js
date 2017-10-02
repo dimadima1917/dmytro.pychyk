@@ -29,7 +29,7 @@ class InfoBicycleModal extends Component {
                             <ModalTitle>Information about &quot;{this.props.bicycle.name}&quot;</ModalTitle>
                 </ModalHeader>
                 <div className="modal-body">
-                    <h4>Product Number</h4>{this.props.bicycle.productNumber}
+                    <h4>Bicycle Number {this.props.bicycle.productNumber}</h4>
                 </div>
                 <div className="modal-body">
                     <h4>Color</h4>{this.props.bicycle.color}

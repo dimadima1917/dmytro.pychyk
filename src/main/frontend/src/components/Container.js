@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import BicycleList from "./Bicycle/BicycleList";
 import {Button, Col, Grid, Row, Form} from "react-bootstrap";
-import {loadAllProductsRequest, load5MostPopular, createProductRequest, deleteBicyclesRequest} from "../api/bikes";
+import {loadAllBicyclesRequest, load5MostPopular, createBicyclesRequest, deleteBicyclesRequest} from "../api/bikes";
 import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../constants/bikeConstants";
 import CreateBikeModal from "../modals/CreateBikeModal";
 import InfoBicycleModal from "../modals/InfoBicycleModal";
@@ -20,7 +20,7 @@ class Container extends Component {
             showCreateModal: false,
             showModalInfo: false
         }
-        this.loadProductListProducts = this.loadProductListProducts.bind(this);
+        this.loadBicycleListBicycles = this.loadBicycleListBicycles.bind(this);
     }
 
     componentDidMount() {
@@ -28,21 +28,21 @@ class Container extends Component {
     }
 
 
-    reloadAllProducts() {
-        this.loadProductListProducts();
+    reloadAllBicycles() {
+        this.loadBicycleListBicycles();
     }
 
-    reloadFiveMostPopularProducts() {
+    reloadFiveMostPopularBicycles() {
         this.load5MostPopularBicycles();
     }
 
 
-    loadProductListProducts() {
-        loadAllProductsRequest()
-            .then((products) => { //successCallback
+    loadBicycleListBicycles() {
+        loadAllBicyclesRequest()
+            .then((bicycles) => { //successCallback
                 this.setState({
-                    bikes: products,
-                    displayedBikes: products
+                    bikes: bicycles,
+                    displayedBikes: bicycles
                 });
                 return null;
             })
@@ -53,10 +53,10 @@ class Container extends Component {
 
     load5MostPopularBicycles() {
         load5MostPopular()
-            .then((products) => { //successCallback
+            .then((bicycles) => { //successCallback
                 this.setState({
-                    bikes: products,
-                    displayedBikes: products
+                    bikes: bicycles,
+                    displayedBikes: bicycles
                 });
                 return null;
             })
@@ -73,16 +73,16 @@ class Container extends Component {
 
     searchHandler(e) {
         const searchQuery = e.target.value.toLowerCase().trim();
-        const displayedProducts = this.state.bikes.filter(function (el) {
+        const displayedBicycles = this.state.bikes.filter(function (el) {
             const searchValue = el.name.toLowerCase().trim();
             return searchValue.indexOf(searchQuery) !== -1;
         });
         this.setState({
-            displayedBikes: displayedProducts
+            displayedBikes: displayedBicycles
         });
     }
 
-    onCloseModal(e) {
+    onCloseModal() {
         this.setState({
             showCreateModal: false,
             showModalInfo: false
@@ -105,24 +105,24 @@ class Container extends Component {
 
                 }
             );
-            this.loadProductListProducts()
+            this.loadBicycleListBicycles()
         }
     }
 
     createBicycleHandler(bicycle) {
         if (bicycle) {
-            createProductRequest(bicycle)
-                .then((response) => this.reloadAllProducts());
+            createBicyclesRequest(bicycle)
+                .then((response) => this.reloadAllBicycles());
         }
     }
 
     deleteBicycleHandler(bicyclesId) {
         if (bicyclesId && this.state.isToogleOn) {
             deleteBicyclesRequest(bicyclesId)
-                .then((response) => this.reloadAllProducts());
+                .then((response) => this.reloadAllBicycles());
         } else {
             deleteBicyclesRequest(bicyclesId)
-                .then((response) => this.reloadFiveMostPopularProducts());
+                .then((response) => this.reloadFiveMostPopularBicycles());
         }
     }
 

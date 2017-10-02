@@ -7,12 +7,12 @@ const DELETE = 'DELETE';
 
 
 const GET_ALL_PRODUCTS_URL = "http://localhost:8080/showAll";
-const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/";
+const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/top5";
 const CREATE_BICYCLE_URL = "http://localhost:8080/add";
 const DELETE_BICYCLE_URL = "http://localhost:8080/delete/";
 
 
-export const loadAllProductsRequest = () => {
+export const loadAllBicyclesRequest = () => {
     return axios({
         method: GET,
         url: GET_ALL_PRODUCTS_URL,
@@ -45,7 +45,7 @@ export const load5MostPopular = () => {
     })
 };
 
-export const createProductRequest = (bicycle) => {
+export const createBicyclesRequest = (bicycle) => {
     return axios({
         method: POST,
         url: CREATE_BICYCLE_URL,

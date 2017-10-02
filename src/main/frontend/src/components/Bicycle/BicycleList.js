@@ -14,8 +14,8 @@ const BicycleList = ({displayedBicycles, searchHandler, isToogleOn, deleteBicycl
             <tr>
                 <th>id</th>
                 <th>Name</th>
-                <th>Remove</th>
                 <th>Information</th>
+                <th>Remove</th>
             </tr>
             </thead>
             <tbody>
