@@ -122,7 +122,6 @@ class Container extends Component {
                         this.reloadAllBicycles()
                     }
                 })
-            // .then((response) => this.reloadAllBicycles());
         }
     }
 

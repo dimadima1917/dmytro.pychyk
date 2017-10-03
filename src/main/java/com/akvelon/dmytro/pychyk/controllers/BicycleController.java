@@ -35,13 +35,11 @@ public class BicycleController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public boolean delete(@PathVariable("id") int id) {
-        System.out.println(bicycleService.delete(id));
         return bicycleService.delete(id);
     }
 
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public @ResponseBody long add(@RequestBody Bicycle bicycle) {
-        System.out.println(bicycle);
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public long add(@RequestBody Bicycle bicycle) {
         return bicycleService.add(bicycle);
     }
 

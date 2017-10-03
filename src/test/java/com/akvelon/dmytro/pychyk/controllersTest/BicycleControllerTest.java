@@ -99,7 +99,7 @@ public class BicycleControllerTest {
         String jsonRequest = gson.toJson(bicycle1);
         String jsonResponse = gson.toJson(bicycleService.add(bicycle1));//gson.toJson(bicycleService.add(bicycle1));
 
-        mockMvc.perform(post("/add").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/create").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().json(jsonResponse));
@@ -112,7 +112,7 @@ public class BicycleControllerTest {
         String jsonRequest = gson.toJson(bicycle1);
         String jsonResponse = gson.toJson(bicycleService.add(bicycle1));
 
-        mockMvc.perform(post("/add").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post("/create").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().json(jsonResponse));

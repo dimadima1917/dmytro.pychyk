@@ -6,9 +6,9 @@ const POST = 'POST';
 const DELETE = 'DELETE';
 
 
-const GET_ALL_PRODUCTS_URL = "http://localhost:8080/showAll";
-const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/top5";
-const CREATE_BICYCLE_URL = "http://localhost:8080/add";
+const GET_ALL_PRODUCTS_URL = "http://localhost:8080/showAll/";
+const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/top5/";
+const CREATE_BICYCLE_URL = "http://localhost:8080/create/";
 const DELETE_BICYCLE_URL = "http://localhost:8080/delete/";
 
 
