@@ -3,9 +3,7 @@ package com.akvelon.dmytro.pychyk.dao;
 import com.akvelon.dmytro.pychyk.domain.Bicycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.IncorrectResultSizeDataAccessException;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.core.*;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -39,45 +37,35 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
 
     @Override
     public long add(Bicycle bicycle) {
-        UUID uuid = UUID.randomUUID();
+        try {
+            UUID uuid = UUID.randomUUID();
+            this.jdbcTemplate.update(new PreparedStatementCreator() {
+                @Override
+                public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                    PreparedStatement preparedStatement = null;
 
-        this.jdbcTemplate.update(new PreparedStatementCreator() {
-            @Override
-            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
-                PreparedStatement preparedStatement = null;
-                preparedStatement = connection.prepareStatement(ADD, new String[]{"productId"});
-                preparedStatement.setString(1, bicycle.getName());
-                preparedStatement.setString(2, bicycle.getProductNumber());
-                preparedStatement.setString(3, bicycle.getColor());
-                preparedStatement.setDouble(4, bicycle.getStandardCost());
-                preparedStatement.setString(5, bicycle.getSize());
-                preparedStatement.setString(6, bicycle.getStyle());
-                preparedStatement.setString(7, uuid.toString());
-                return preparedStatement;
-            }
-        }, keyHolder);
-        return (long) keyHolder.getKey();
+                    preparedStatement = connection.prepareStatement(ADD, new String[]{"productId"});
+                    preparedStatement.setString(1, bicycle.getName());
+                    preparedStatement.setString(2, bicycle.getProductNumber());
+                    preparedStatement.setString(3, bicycle.getColor());
+                    preparedStatement.setDouble(4, bicycle.getStandardCost());
+                    preparedStatement.setString(5, bicycle.getSize());
+                    preparedStatement.setString(6, bicycle.getStyle());
+                    preparedStatement.setString(7, uuid.toString());
+                    return preparedStatement;
+                }
+            }, keyHolder);
+            return (long) keyHolder.getKey();
+        } catch (Exception exception) {
+            return -1;
+        }
     }
 
     @Override
     public void delete(long productId) {
-        jdbcTemplate.update(delBillofmaterials, productId);
-        jdbcTemplate.update(delb2Billofmaterials, productId);
-        jdbcTemplate.update(delProductcosthistory, productId);
-        jdbcTemplate.update(delProductdocument, productId);
-        jdbcTemplate.update(delProductinventory, productId);
-        jdbcTemplate.update(delProductlistpricehistory, productId);
-        jdbcTemplate.update(delProductproductphoto, productId);
-        jdbcTemplate.update(delProductreview, productId);
-        jdbcTemplate.update(delProductvendor, productId);
-        jdbcTemplate.update(delPurchaseorderdetail, productId);
-        jdbcTemplate.update(delSalesorderdetail, productId);
-        jdbcTemplate.update(delSpecialofferproduct, productId);
-        jdbcTemplate.update(delShoppingcartitem, productId);
-        jdbcTemplate.update(delTransactionhistory, productId);
-        jdbcTemplate.update(delWorkorderrouting, productId);
-        jdbcTemplate.update(delWorkorder, productId);
-        jdbcTemplate.update(delProduct, productId);
+        String Sql = DELETE_BY_ID;
+        String Sql1 = Sql.replace("?", Long.toString(productId));
+        jdbcTemplate.batchUpdate(Sql1.split(";"));
     }
 
     @Override

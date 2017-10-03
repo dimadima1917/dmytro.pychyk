@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -60,9 +59,25 @@ public class ServiceBicycleImplTest {
     }
 
     @Test
-    public void deleteTest() {
-        bicycleService.delete(bicycle.getProductId());
-        verify(bicycleDao).delete(bicycle.getProductId());
+    public void deleteTest_delete_existsInDataBase() {
+        when(bicycleDao.searchById(bicycle.getProductId())).thenReturn(bicycle);
+
+        boolean delete = bicycleService.delete(bicycle.getProductId());
+
+        boolean expected = true;
+
+        assertEquals(expected,delete);
+    }
+
+    @Test
+    public void deleteTest_delete_notExistsInDataBase() {
+        when(bicycleDao.searchById(bicycle.getProductId())).thenReturn(null);
+
+        boolean delete = bicycleService.delete(bicycle.getProductId());
+
+        boolean expected = false;
+
+        assertEquals(expected,delete);
     }
 
     @Test

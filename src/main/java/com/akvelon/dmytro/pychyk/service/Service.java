@@ -10,7 +10,7 @@ public interface Service<T> {
 
     long add(T object);
 
-    void delete(long id);
+    boolean delete(long id);
 
     T searchById(long id);
 

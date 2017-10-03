@@ -21,9 +21,13 @@ public class BicycleController {
         return bicycleService.selectAll();
     }
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String showHelloWorld() {
+        return "Hello World";
+    }
 
     @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
-    public Bicycle searchByName(@PathVariable("id") long id) {
+    public Bicycle searchById(@PathVariable("id") long id) {
         return bicycleService.searchById(id);
     }
 
@@ -34,8 +38,9 @@ public class BicycleController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable("id") int id) {
-        bicycleService.delete(id);
+    public boolean delete(@PathVariable("id") int id) {
+        System.out.println(bicycleService.delete(id));
+        return bicycleService.delete(id);
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)

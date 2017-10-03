@@ -112,9 +112,17 @@ class Container extends Component {
     createBicycleHandler(bicycle) {
         if (bicycle) {
             createBicyclesRequest(bicycle)
-                // .then((response)=>
-                // {if(response !== -1){alert(response)}})
-                .then((response) => this.reloadAllBicycles());
+                .then((response) => {
+                    if (response == -1) {
+                        alert("Duplicate name or product number. Repeat input, please.")
+                        this.setState({
+                            showCreateModal: true
+                        })
+                    } else {
+                        this.reloadAllBicycles()
+                    }
+                })
+            // .then((response) => this.reloadAllBicycles());
         }
     }
 
@@ -147,7 +155,8 @@ class Container extends Component {
                                         onClick={this.showCreateModal.bind(this)}>
                                     CREATE NEW BICYCLES
                                 </button>
-                                <button type="button" className="btn btn-default navbar-btn" onClick={this.handleClick.bind(this)}>
+                                <button type="button" className="btn btn-default navbar-btn"
+                                        onClick={this.handleClick.bind(this)}>
                                     {this.state.isToogleOn ? SHOW_TOP_FIVE_BICYCLES : SHOW_ALL_BICYCLES}
                                 </button>
                             </div>

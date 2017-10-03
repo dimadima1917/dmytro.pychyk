@@ -27,9 +27,7 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
         long addTrue = -1;
 
         if (bicycle != null) {
-
             addTrue = bicycleDao.add(bicycle);
-
         } else {
             return addTrue;
         }
@@ -37,8 +35,15 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     }
 
     @Override
-    public void delete(long id) {
-        bicycleDao.delete(id);
+    public boolean delete(long id) {
+        boolean delete = false;
+        if (bicycleDao.searchById(id) != null) {
+            delete = true;
+            bicycleDao.delete(id);
+        } else {
+            return delete;
+        }
+        return delete;
     }
 
     @Override
