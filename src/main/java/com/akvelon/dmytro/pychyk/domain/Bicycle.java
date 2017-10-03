@@ -18,7 +18,6 @@ public class Bicycle {
     private String style;
 
 
-
     //constructor without parameters
     public Bicycle() {
     }
@@ -101,5 +100,36 @@ public class Bicycle {
                 ", size='" + size + '\'' +
                 ", style='" + style + '\'' +
                 '}';
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Bicycle bicycle = (Bicycle) o;
+
+        if (productId != bicycle.productId) return false;
+        if (Double.compare(bicycle.standardCost, standardCost) != 0) return false;
+        if (name != null ? !name.equals(bicycle.name) : bicycle.name != null) return false;
+        if (productNumber != null ? !productNumber.equals(bicycle.productNumber) : bicycle.productNumber != null)
+            return false;
+        if (color != null ? !color.equals(bicycle.color) : bicycle.color != null) return false;
+        if (size != null ? !size.equals(bicycle.size) : bicycle.size != null) return false;
+        return style != null ? style.equals(bicycle.style) : bicycle.style == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = productId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (productNumber != null ? productNumber.hashCode() : 0);
+        result = 31 * result + (color != null ? color.hashCode() : 0);
+        temp = Double.doubleToLongBits(standardCost);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (size != null ? size.hashCode() : 0);
+        result = 31 * result + (style != null ? style.hashCode() : 0);
+        return result;
     }
 }

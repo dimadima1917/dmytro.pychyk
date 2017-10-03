@@ -21,10 +21,6 @@ public class BicycleController {
         return bicycleService.selectAll();
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String showHelloWorld() {
-        return "Hello World";
-    }
 
     @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
     public Bicycle searchById(@PathVariable("id") long id) {
@@ -44,7 +40,7 @@ public class BicycleController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public long add(@RequestBody Bicycle bicycle) {
+    public @ResponseBody long add(@RequestBody Bicycle bicycle) {
         System.out.println(bicycle);
         return bicycleService.add(bicycle);
     }

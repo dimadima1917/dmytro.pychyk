@@ -66,7 +66,7 @@ public class ServiceBicycleImplTest {
 
         boolean expected = true;
 
-        assertEquals(expected,delete);
+        assertEquals(expected, delete);
     }
 
     @Test
@@ -77,7 +77,7 @@ public class ServiceBicycleImplTest {
 
         boolean expected = false;
 
-        assertEquals(expected,delete);
+        assertEquals(expected, delete);
     }
 
     @Test
