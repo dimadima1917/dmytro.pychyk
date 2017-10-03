@@ -7,6 +7,7 @@ import CreateBikeModal from "../modals/CreateBikeModal";
 import InfoBicycleModal from "../modals/InfoBicycleModal";
 
 
+
 class Container extends Component {
 
     constructor(props) {
@@ -18,7 +19,7 @@ class Container extends Component {
             displayedBikes: [],
             isToogleOn: false,
             showCreateModal: false,
-            showModalInfo: false
+            showModalInfo: false,
         }
         this.loadBicycleListBicycles = this.loadBicycleListBicycles.bind(this);
     }
@@ -177,7 +178,6 @@ class Container extends Component {
                                   onClose={this.onCloseModal.bind(this)}
                                   bicycle={this.state.bike}
                 />
-
                 <Row>
                     <Col md={12}>
                         <BicycleList displayedBicycles={this.state.displayedBikes}
