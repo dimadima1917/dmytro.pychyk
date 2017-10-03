@@ -112,6 +112,8 @@ class Container extends Component {
     createBicycleHandler(bicycle) {
         if (bicycle) {
             createBicyclesRequest(bicycle)
+                // .then((response)=>
+                // {if(response !== -1){alert(response)}})
                 .then((response) => this.reloadAllBicycles());
         }
     }

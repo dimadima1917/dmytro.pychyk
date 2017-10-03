@@ -40,22 +40,19 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
     @Override
     public long add(Bicycle bicycle) {
         UUID uuid = UUID.randomUUID();
+
         this.jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
-            public PreparedStatement createPreparedStatement(Connection connection) {
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 PreparedStatement preparedStatement = null;
-                try {
-                    preparedStatement = connection.prepareStatement(ADD, new String[]{"productId"});
-                    preparedStatement.setString(1, bicycle.getName());
-                    preparedStatement.setString(2, bicycle.getProductNumber());
-                    preparedStatement.setString(3, bicycle.getColor());
-                    preparedStatement.setDouble(4, bicycle.getStandardCost());
-                    preparedStatement.setString(5, bicycle.getSize());
-                    preparedStatement.setString(6, bicycle.getStyle());
-                    preparedStatement.setString(7, uuid.toString());
-                } catch (SQLException e) {
-                    System.out.println("Sql exception");
-                }
+                preparedStatement = connection.prepareStatement(ADD, new String[]{"productId"});
+                preparedStatement.setString(1, bicycle.getName());
+                preparedStatement.setString(2, bicycle.getProductNumber());
+                preparedStatement.setString(3, bicycle.getColor());
+                preparedStatement.setDouble(4, bicycle.getStandardCost());
+                preparedStatement.setString(5, bicycle.getSize());
+                preparedStatement.setString(6, bicycle.getStyle());
+                preparedStatement.setString(7, uuid.toString());
                 return preparedStatement;
             }
         }, keyHolder);
@@ -87,7 +84,7 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
     public Bicycle searchById(long id) {
         Bicycle bicycle;
         try {
-            bicycle = this.jdbcTemplate.queryForObject(FIND_BY_ID, new BeanPropertyRowMapper<>(Bicycle.class),id);
+            bicycle = this.jdbcTemplate.queryForObject(FIND_BY_ID, new BeanPropertyRowMapper<>(Bicycle.class), id);
         } catch (IncorrectResultSizeDataAccessException exception) {
             bicycle = null;
         }
@@ -98,7 +95,7 @@ public class DaoBicycleImpl implements Dao<Bicycle> {
     public Bicycle searchByName(String name) {
         Bicycle bicycle;
         try {
-            bicycle = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new BeanPropertyRowMapper<>(Bicycle.class),name);
+            bicycle = this.jdbcTemplate.queryForObject(FIND_BY_NAME, new BeanPropertyRowMapper<>(Bicycle.class), name);
         } catch (IncorrectResultSizeDataAccessException exception) {
             bicycle = null;
         }
