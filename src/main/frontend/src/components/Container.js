@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import BicycleList from "./Bicycle/BicycleList";
-import {Button, Col, Grid, Row, Form} from "react-bootstrap";
-import {loadAllBicyclesRequest, load5MostPopular, createBicyclesRequest, deleteBicyclesRequest} from "../api/bikes";
+import {Button, ButtonToolbar, Col, FormControl, FormGroup, Grid, Navbar, Row,} from "react-bootstrap";
+import {loadAllBicyclesRequest, load5MostPopularBicyclesRequest, createBicycleRequest, deleteBicycleRequest} from "../api/bikes";
 import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../constants/bikeConstants";
 import CreateBikeModal from "../modals/CreateBikeModal";
 import InfoBicycleModal from "../modals/InfoBicycleModal";
-
-
+import Notifications from "./Notifications";
 
 class Container extends Component {
 
@@ -14,72 +13,78 @@ class Container extends Component {
         super(props);
 
         this.state = {
-            bike: {},
-            bikes: [],
-            displayedBikes: [],
-            isToogleOn: false,
+            bicycle: {},
+            bicycles: [],
+            displayedBicycles: [],
+            toggleShowAllBicycles: false,
             showCreateModal: false,
             showModalInfo: false,
-        }
-        this.loadBicycleListBicycles = this.loadBicycleListBicycles.bind(this);
+            showNotifications: false
+        };
+        this.loadAllBicycles = this.loadAllBicycles.bind(this);
     }
 
     componentDidMount() {
         this.load5MostPopularBicycles();
     }
 
-
     reloadAllBicycles() {
-        this.loadBicycleListBicycles();
+        this.loadAllBicycles();
     }
 
     reloadFiveMostPopularBicycles() {
         this.load5MostPopularBicycles();
     }
 
-
-    loadBicycleListBicycles() {
+    loadAllBicycles() {
         loadAllBicyclesRequest()
             .then((bicycles) => { //successCallback
                 this.setState({
-                    bikes: bicycles,
-                    displayedBikes: bicycles
+                    bicycles: bicycles,
+                    displayedBicycles: bicycles
                 });
                 return null;
             })
-            .catch((error) => { //errror callback
+            .catch((error) => { //error callback
                 console.error(error);
             });
     }
 
     load5MostPopularBicycles() {
-        load5MostPopular()
+        load5MostPopularBicyclesRequest()
             .then((bicycles) => { //successCallback
                 this.setState({
-                    bikes: bicycles,
-                    displayedBikes: bicycles
+                    bicycles: bicycles,
+                    displayedBicycles: bicycles
                 });
                 return null;
             })
-            .catch((error) => { //errror callback
+            .catch((error) => { //error callback
                 console.error(error);
             });
     }
 
-    showCreateModal(e) {
+    showCreateModal() {
         this.setState({
             showCreateModal: true
         });
     }
 
+    searchBikes(searchQuery) {
+        if (this.state.bicycle) {
+            return this.state.bicycles.filter(function (el) {
+                const searchValue = el.name.toLowerCase().trim();
+                return searchValue.indexOf(searchQuery) !== -1;
+            });
+        } else {
+            return [];
+        }
+    }
+
     searchHandler(e) {
         const searchQuery = e.target.value.toLowerCase().trim();
-        const displayedBicycles = this.state.bikes.filter(function (el) {
-            const searchValue = el.name.toLowerCase().trim();
-            return searchValue.indexOf(searchQuery) !== -1;
-        });
         this.setState({
-            displayedBikes: displayedBicycles
+            displayedBicycles: this.searchBikes(searchQuery)
         });
     }
 
@@ -90,36 +95,39 @@ class Container extends Component {
         })
     }
 
-
     handleClick() {
-        if (this.state.isToogleOn) {
+        if (this.state.toggleShowAllBicycles) {
             this.setState({
-                    isToogleOn: false,
-                    displayedBikes: this.state.bikes
+                    toggleShowAllBicycles: false,
+                    displayedBicycles: this.state.bicycles
                 }
             );
             this.load5MostPopularBicycles()
         } else {
             this.setState({
-                    isToogleOn: true,
-                    displayedBikes: this.state.bikes
-
+                    toggleShowAllBicycles: true,
+                    displayedBicycles: this.state.bicycles
                 }
             );
-            this.loadBicycleListBicycles()
+            this.loadAllBicycles()
         }
     }
 
     createBicycleHandler(bicycle) {
         if (bicycle) {
-            createBicyclesRequest(bicycle)
+            createBicycleRequest(bicycle)
                 .then((response) => {
-                    if (response == -1) {
-                        alert("Duplicate name or product number. Repeat input, please.")
-                        this.setState({
-                            showCreateModal: true
-                        })
+                    if (response === -1) {
+                        this.setState(
+                            {
+                                showNotifications: true,
+                            }
+                        )
                     } else {
+                        this.setState(
+                            {
+                                showNotifications: false
+                            })
                         this.reloadAllBicycles()
                     }
                 })
@@ -127,62 +135,61 @@ class Container extends Component {
     }
 
     deleteBicycleHandler(bicyclesId) {
-        if (bicyclesId && this.state.isToogleOn) {
-            deleteBicyclesRequest(bicyclesId)
+        if (this.state.toggleShowAllBicycles) {
+            deleteBicycleRequest(bicyclesId)
                 .then((response) => this.reloadAllBicycles());
         } else {
-            deleteBicyclesRequest(bicyclesId)
+            deleteBicycleRequest(bicyclesId)
                 .then((response) => this.reloadFiveMostPopularBicycles());
         }
     }
 
     showModalInfo(bike) {
         this.setState({
-            bike: bike,
+            bicycle: bike,
             showModalInfo: true
         });
     }
 
     render() {
         return (
-
             <Grid fluid>
-                <nav className="navbar navbar-default">
-                    <div className="container-fluid">
-                        <div className="navbar-header">
-                            <div className="btn-group" role="group" aria-label="...">
-                                <button type="button" className="btn btn-primary navbar-btn"
-                                        onClick={this.showCreateModal.bind(this)}>
-                                    CREATE NEW BICYCLES
-                                </button>
-                                <button type="button" className="btn btn-default navbar-btn"
-                                        onClick={this.handleClick.bind(this)}>
-                                    {this.state.isToogleOn ? SHOW_TOP_FIVE_BICYCLES : SHOW_ALL_BICYCLES}
-                                </button>
-                            </div>
-                        </div>
-                        <form className="navbar-form navbar-right">
-                            <div className="form-group">
-                                <input onChange={this.searchHandler.bind(this)} type="text" className="form-control"
-                                       placeholder="Search"/>
-                            </div>
-                        </form>
-                    </div>
-                </nav>
+                <Navbar fluid inverse>
+                    <Navbar.Header>
+                        <ButtonToolbar>
+                            <Button bsStyle="primary" type="button"
+                                    onClick={this.showCreateModal.bind(this)}>
+                                CREATE NEW BICYCLES
+                            </Button>
+                            <Button bsStyle="default" type="button"
+                                    onClick={this.handleClick.bind(this)}>
+                                {this.state.toggleShowAllBicycles ? SHOW_ALL_BICYCLES : SHOW_TOP_FIVE_BICYCLES}
+                            </Button>
+                        </ButtonToolbar>
+                    </Navbar.Header>
+                    <Navbar.Form pullRight>
+                        <FormGroup>
+                            <FormControl type="text" placeholder="Search" onChange={this.searchHandler.bind(this)}/>
+                        </FormGroup>
+                    </Navbar.Form>
+                </Navbar>
+
+                <Notifications showNotifications={this.state.showNotifications}/>
 
                 <CreateBikeModal showModal={this.state.showCreateModal}
                                  onClose={this.onCloseModal.bind(this)}
-                                 createBicycleHandler={this.createBicycleHandler.bind(this)}/>
+                                 createBicycleHandler={this.createBicycleHandler.bind(this)}
+                />
 
-                <InfoBicycleModal showModalInfo={this.state.showModalInfo}
+                <InfoBicycleModal showModal={this.state.showModalInfo}
                                   onClose={this.onCloseModal.bind(this)}
-                                  bicycle={this.state.bike}
+                                  bicycle={this.state.bicycle}
                 />
                 <Row>
                     <Col md={12}>
-                        <BicycleList displayedBicycles={this.state.displayedBikes}
+                        <BicycleList displayedBicycles={this.state.displayedBicycles}
                                      searchHandler={this.searchHandler.bind(this)}
-                                     isToogleOn={this.state.isToogleOn}
+                                     toggleShowAllBicycles={this.state.toggleShowAllBicycles}
                                      deleteBicycle={this.deleteBicycleHandler.bind(this)}
                                      showInfo={this.showModalInfo.bind(this)}
                         />

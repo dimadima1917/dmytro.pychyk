@@ -10,6 +10,7 @@ import Form from "react-bootstrap/es/Form";
 import ModalFooter from "react-bootstrap/es/ModalFooter";
 import Button from "react-bootstrap/es/Button";
 
+
 class CreateBikeModal extends Component {
 
     constructor(props) {
@@ -21,8 +22,8 @@ class CreateBikeModal extends Component {
             standardCost: '',
             size: '',
             style: '',
-            showModal: false
-        }
+            showModal: false,
+        };
     }
 
     componentWillUpdate(props) {
@@ -44,14 +45,13 @@ class CreateBikeModal extends Component {
 
     onCreate(e) {
         let formData = {
-            name: this.state.nameRef.value || '',
+            name: this.state.NameRef.value || '',
             productNumber: this.state.NumberRef.value || '',
             color: this.state.colorRef.value || '',
             standardCost: this.state.standardCostRef.value || 0,
             size: this.state.sizeRef.value || '',
             style: this.state.styleRef.value || '',
         };
-
         this.props.createBicycleHandler(formData);
         this.closeModal(e);
     }
@@ -71,7 +71,8 @@ class CreateBikeModal extends Component {
                                              type="text"
                                              placeholder="Name"
                                              maxLength="50"
-                                             inputRef={ref => this.state.nameRef = ref}/>
+                                             inputRef={ref => this.state.NameRef = ref}
+                                />
                             </Col>
                         </FormGroup>
                         <FormGroup>
@@ -102,7 +103,7 @@ class CreateBikeModal extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Col smOffset={2} sm={3}>
-                                <ControlLabel>Standart Cost</ControlLabel>
+                                <ControlLabel>Standard Cost</ControlLabel>
                             </Col>
                             <Col sm={6}>
                                 <FormControl id="standardCostRef"

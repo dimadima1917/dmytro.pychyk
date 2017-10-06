@@ -1,22 +1,25 @@
 import React, {Component} from "react";
-import {Button, Modal, ModalFooter, ModalHeader, ModalTitle} from "react-bootstrap";
+import {
+    Button, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader,
+    ModalTitle
+} from "react-bootstrap";
 
 class InfoBicycleModal extends Component {
     constructor(props) {
         super(props);
         this.baseState = this.state = {
-            showModalInfo: false
+            showModal: false
         }
     }
 
     componentWillUpdate(props) {
-        if (this.state.showModalInfo !== props.showModalInfo) {
-            this.setState({showModalInfo: props.showModalInfo});
+        if (this.state.showModal !== props.showModal) {
+            this.setState({showModal: props.showModal});
         }
     }
 
     closeModal() {
-        this.setState({showModalInfo: false});
+        this.setState({showModal: false});
         if (this.props.onClose) {
             this.props.onClose()
         }
@@ -24,25 +27,17 @@ class InfoBicycleModal extends Component {
 
     render() {
         return (
-            <Modal show={this.state.showModalInfo} onHide={this.closeModal.bind(this)}>
+            <Modal show={this.state.showModal} onHide={this.closeModal.bind(this)}>
                 <ModalHeader closeButton>
-                            <ModalTitle>Information about &quot;{this.props.bicycle.name}&quot;</ModalTitle>
+                    <ModalTitle>Information about &quot;{this.props.bicycle.name}&quot;</ModalTitle>
                 </ModalHeader>
-                <div className="modal-body">
-                    <h4>Bicycle Number {this.props.bicycle.productNumber}</h4>
-                </div>
-                <div className="modal-body">
+                <ModalBody>
+                    <h4>Bicycle Number </h4>{this.props.bicycle.productNumber}
                     <h4>Color</h4>{this.props.bicycle.color}
-                </div>
-                <div className="modal-body">
                     <h4>Standard Cost</h4>{this.props.bicycle.standardCost}
-                </div>
-                <div className="modal-body">
                     <h4>Size</h4>{this.props.bicycle.size}
-                </div>
-                <div className="modal-body">
                     <h4>Style</h4>{this.props.bicycle.style}<h4/>
-                </div>
+                </ModalBody>
                 <ModalFooter>
                     <Button bsStyle="default" onClick={this.closeModal.bind(this)}>Cancel</Button>
                 </ModalFooter>

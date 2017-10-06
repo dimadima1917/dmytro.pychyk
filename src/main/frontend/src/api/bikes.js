@@ -4,75 +4,33 @@ const GET = 'GET';
 const PUT = 'PUT';
 const POST = 'POST';
 const DELETE = 'DELETE';
-
-
-const GET_ALL_PRODUCTS_URL = "http://localhost:8080/showAll/";
-const GET_ALL_5_MOST_POPULAR_URL = "http://localhost:8080/top5/";
-const CREATE_BICYCLE_URL = "http://localhost:8080/create/";
+const GET_ALL_BICYCLES_URL = "http://localhost:8080/showAll";
+const GET_5_MOST_POPULAR_BICYCLES_URL = "http://localhost:8080/top5";
+const CREATE_BICYCLE_URL = "http://localhost:8080/create";
 const DELETE_BICYCLE_URL = "http://localhost:8080/delete/";
 
-
 export const loadAllBicyclesRequest = () => {
-    return axios({
-        method: GET,
-        url: GET_ALL_PRODUCTS_URL,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*"
-        },
-        crossDomain: true,
-        responseType: 'json'
-    }).then(response => {
+    return axios.get(GET_ALL_BICYCLES_URL)
+        .then(response => {
+            return response.data
+        })
+};
+
+export const load5MostPopularBicyclesRequest = () => {
+    return axios.get(GET_5_MOST_POPULAR_BICYCLES_URL)
+        .then(response => {
+            return response.data
+        })
+};
+
+export const createBicycleRequest = (bicycle) => {
+    return axios.post(CREATE_BICYCLE_URL, bicycle).then(response =>{
         return response.data
     })
 };
 
-
-export const load5MostPopular = () => {
-    return axios({
-        method: GET,
-        url: GET_ALL_5_MOST_POPULAR_URL,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=UTF-8',
-            "Access-Control-Allow-Origin": "*"
-        },
-        crossDomain: true,
-        responseType: 'json'
-    }).then(response => {
-        return response.data
-    })
-};
-
-export const createBicyclesRequest = (bicycle) => {
-    return axios({
-        method: POST,
-        url: CREATE_BICYCLE_URL,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            "Access-Control-Allow-Origin": "*"
-        },
-        data: bicycle,
-        crossDomain: true,
-        responseType: 'json'
-    }).then(response => {
-        return response.data
-    })
-};
-
-export const deleteBicyclesRequest = (bicyclesId) => {
-    return axios({
-        method: DELETE,
-        url: DELETE_BICYCLE_URL + bicyclesId,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        crossDomain: true,
-        responseType: 'json'
-    }).then(response => {
+export const deleteBicycleRequest = (bicyclesId) => {
+    return axios.delete(DELETE_BICYCLE_URL.concat(bicyclesId)).then(response =>{
         return response.data
     })
 };

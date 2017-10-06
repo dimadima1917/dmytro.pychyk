@@ -1,8 +1,8 @@
-import React, {Component} from "react";
+import React, {} from "react";
 import {Button} from "react-bootstrap";
 
+const Bicycle = ({bicycle, deleteBicycle, showInfo}) =>
 
-const BicycleTable = ({bicycle, deleteBicycle, showInfo}) =>
     <tr>
         <td>{bicycle.productId}</td>
         <td>{bicycle.name}</td>
@@ -12,8 +12,6 @@ const BicycleTable = ({bicycle, deleteBicycle, showInfo}) =>
         <td>
             <Button bsStyle="danger" onClick={() => deleteBicycle(bicycle.productId)}>Delete</Button>
         </td>
-
     </tr>
 
-
-export default BicycleTable;
+export default Bicycle;

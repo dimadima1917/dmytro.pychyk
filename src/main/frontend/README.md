@@ -1,9 +1,5 @@
-# minimal-react-webpack-babel-setup
 
-* `git clone git@github.com:rwieruch/minimal-react-webpack-babel-setup.git`
-* cd minimal-react-webpack-babel-setup
-* npm install
+* cd C:\Users\dmytro.pychyk\IdeaProjects\dmytro.pychyk\src\main\frontend
 * npm start
-* visit `http://localhost:8080/`
+* visit `http://localhost:8090/`
 
-Read: [The Minimal React Webpack Babel Setup](https://www.robinwieruch.de/minimal-react-webpack-babel-setup/)
