@@ -9,7 +9,7 @@ class Notifications extends Component {
         }
     }
 
-    componentWillUpdate(props) {
+    componentWillReceiveProps(props) {
         if (this.state.showNotifications !== props.showNotifications) {
             this.setState({showNotifications: props.showNotifications})
         }
@@ -20,9 +20,11 @@ class Notifications extends Component {
             return (
                 <Alert bsStyle="danger">Duplicate name or product number.</Alert>
             )
-        } else return (
-            null
-        )
+        } else {
+            return (
+                null
+            )
+        }
     }
 }
 
