@@ -43,8 +43,13 @@ public class BicycleController {
         return bicycleService.add(bicycle);
     }
 
-    @RequestMapping(value = "/searchByName/{name}", method = RequestMethod.GET)
-    public Bicycle searchByName(@PathVariable String name) {
-        return bicycleService.searchByName(name);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public boolean update(@RequestBody Bicycle bicycle) {
+        return bicycleService.update(bicycle);
+    }
+
+    @RequestMapping(value = "/searchBySubstring/{string}", method = RequestMethod.GET)
+    public List<Bicycle> searchByName(@PathVariable String string) {
+        return bicycleService.searchByString(string);
     }
 }

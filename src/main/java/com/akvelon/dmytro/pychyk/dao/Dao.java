@@ -1,5 +1,7 @@
 package com.akvelon.dmytro.pychyk.dao;
 
+import com.akvelon.dmytro.pychyk.domain.Bicycle;
+
 import java.util.List;
 
 public interface Dao <T> {
@@ -10,10 +12,12 @@ public interface Dao <T> {
 
     long add(T object);
 
-    void delete(long id);
+    boolean delete(long id);
 
     T searchById(long id);
 
-    T searchByName(String name);
+    boolean update(Bicycle bicycle);
+
+    List<T> searchByString(String substring);
 
 }

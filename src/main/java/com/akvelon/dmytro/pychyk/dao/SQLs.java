@@ -3,20 +3,25 @@ package com.akvelon.dmytro.pychyk.dao;
 public class SQLs {
 
     public static final String SELECT_MOST_POPULAR = "SELECT `product`.`productID`, `product`.`name`, `product`.`productNumber`, `product`.`color`, `product`.`standardCost`, `product`.`size`, `product`.`style`\n" +
-            "FROM `adventureworks2014`.`product`\n" +
-            "INNER JOIN `adventureworks2014`.`SalesOrderDetail` ON `adventureworks2014`.`Product`.`ProductID` = `adventureworks2014`.`SalesOrderDetail`.`ProductID` \n" +
+            "FROM `product`\n" +
+            "INNER JOIN `SalesOrderDetail` ON `Product`.`ProductID` = `SalesOrderDetail`.`ProductID` \n" +
             "WHERE `ProductSubcategoryID` = 1\n" +
             "GROUP BY `Product`.`ProductID`, `Product`.`Name`, `Product`.`ProductNumber`, `Product`.`Color`, `Product`.`StandardCost`, `Product`.`Size`, `Product`.`Style`\n" +
-            "ORDER BY SUM(`adventureworks2014`.`SalesOrderDetail`.`OrderQty`) DESC\n" +
+            "ORDER BY SUM(`SalesOrderDetail`.`OrderQty`) DESC\n" +
             "limit 5";
 
-    public static final String SELECT_ALL = "SELECT *FROM `adventureworks2014`.`product`WHERE `ProductSubcategoryID` = 1";
+    public static final String SELECT_ALL = "SELECT *FROM `product`WHERE `ProductSubcategoryID` = 1";
 
     public static final String FIND_BY_ID = "select * from product WHERE ProductID = ? and ProductSubcategoryID = 1;";
 
-    public static final String FIND_BY_NAME = "select * from product WHERE name = ? and ProductSubcategoryID = 1;";
+    public static final String UPDATE = "UPDATE product SET Name = ?,ProductNumber = ?,Color = ?,StandardCost = ? ,Size = ?,Style = ?\n" +
+            "WHERE ProductID = ?;";
 
-    public static final String ADD = "INSERT INTO `adventureworks2014`.`product`\n" +
+    public static final String FIND_BY_STRUNG = "SELECT *\n" +
+            "FROM product\n" +
+            "WHERE concat(ProductID, Name, ProductNumber, Color, StandardCost, Size, Style) LIKE ? AND ProductSubcategoryID = 1;";
+
+    public static final String ADD = "INSERT INTO `product`\n" +
             "(" +
             "`Name`," +
             " `ProductNumber`," +
@@ -95,7 +100,7 @@ public class SQLs {
     public static final String DELETE_BY_ID = "START TRANSACTION;\n" +
             "SET @ProductID_to_delete = ?;\n" +
             "\n" +
-            "            DELETE FROM `adventureworks2014`.`billofmaterials`\n" +
+            "            DELETE FROM `billofmaterials`\n" +
             "                WHERE ProductAssemblyID = @ProductID_to_delete;\n" +
             "\n" +
             "            DELETE FROM billofmaterials\n" +

@@ -36,14 +36,11 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
 
     @Override
     public boolean delete(long id) {
-        boolean delete = false;
         if (bicycleDao.searchById(id) != null) {
-            delete = true;
-            bicycleDao.delete(id);
+            return bicycleDao.delete(id);
         } else {
-            return delete;
+            return false;
         }
-        return delete;
     }
 
     @Override
@@ -52,7 +49,16 @@ public class ServiceBicycleImpl implements Service<Bicycle> {
     }
 
     @Override
-    public Bicycle searchByName(String name) {
-        return bicycleDao.searchByName(name);
+    public boolean update(Bicycle bicycle) {
+        if (bicycle != null) {
+            return bicycleDao.update(bicycle);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public List<Bicycle> searchByString(String substring) {
+        return bicycleDao.searchByString(substring);
     }
 }

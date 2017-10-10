@@ -1,8 +1,7 @@
-package com.akvelon.dmytro.pychyk.serviceTest;
+package com.akvelon.dmytro.pychyk.service;
 
 import com.akvelon.dmytro.pychyk.dao.Dao;
 import com.akvelon.dmytro.pychyk.domain.Bicycle;
-import com.akvelon.dmytro.pychyk.service.ServiceBicycleImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,10 +9,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -44,6 +44,7 @@ public class ServiceBicycleImplTest {
 
         assertEquals(bicycle.getProductId(), i);
 
+        verify(bicycleDao).add(bicycle);
     }
 
     @Test
@@ -56,17 +57,47 @@ public class ServiceBicycleImplTest {
         long i = bicycleService.add(null);
 
         assertEquals(expected, i);
+
+    }
+
+    @Test
+    public void updateTest_bicycleNull_willWorkIncorrectly() throws Exception {
+
+        boolean expected = false;
+
+        when(bicycleDao.update(null)).thenReturn(false);
+
+        boolean result = bicycleService.update(null);
+
+        assertEquals(expected, result);
+
+    }
+
+    @Test
+    public void updateTest_bicycleNotNull_willWorkCorrectly() throws Exception {
+
+        when(bicycleDao.update(bicycle)).thenReturn(true);
+
+        boolean result = bicycleService.update(bicycle);
+
+        assertEquals(true, result);
+
+        verify(bicycleDao).update(bicycle);
     }
 
     @Test
     public void deleteTest_delete_existsInDataBase() {
         when(bicycleDao.searchById(bicycle.getProductId())).thenReturn(bicycle);
 
+        when(bicycleDao.delete(bicycle.getProductId())).thenReturn(true);
+
         boolean delete = bicycleService.delete(bicycle.getProductId());
 
         boolean expected = true;
 
         assertEquals(expected, delete);
+
+        verify(bicycleDao).delete(bicycle.getProductId());
     }
 
     @Test
@@ -81,11 +112,46 @@ public class ServiceBicycleImplTest {
     }
 
     @Test
-    public void searchByIdTest() {
+    public void searchByIdTest_ifExists_returnBicycle() {
         when(bicycleDao.searchById(bicycle.getProductId())).thenReturn(bicycleMap.get(bicycle.getProductId()));
 
         int idResult = bicycleService.searchById(bicycle.getProductId()).getProductId();
 
         assertEquals(bicycleMap.get(bicycle.getProductId()).getProductId(), idResult);
+
+        verify(bicycleDao).searchById(bicycle.getProductId());
     }
+
+    @Test
+    public void searchByIdTest_ifNotExists_returnBicycle() {
+        when(bicycleDao.searchById(bicycle.getProductId())).thenReturn(null);
+
+        Bicycle idResult = bicycleService.searchById(bicycle.getProductId());
+
+        assertEquals(null, idResult);
+
+        verify(bicycleDao).searchById(bicycle.getProductId());
+    }
+
+    @Test
+    public void searchBySting_ifExists_returnEmptyList() {
+        when(bicycleDao.searchByString("")).thenReturn(new ArrayList<Bicycle>());
+
+        int result = bicycleService.searchByString("").size();
+
+        int expected = 0;
+
+        assertEquals(expected, result);
+    }
+    @Test
+    public void searchBySting_ifExists_returnNotEmptyList() {
+        when(bicycleDao.searchByString("")).thenReturn(Arrays.asList(new Bicycle[10]));
+
+        int result = bicycleService.searchByString("").size();
+
+        assertTrue(result > 0);
+
+        verify(bicycleDao).searchByString("");
+    }
+
 }
