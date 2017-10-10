@@ -3,10 +3,9 @@ import {Table,} from "react-bootstrap";
 import Bicycle from "./Bicycle";
 import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../../constants/bikeConstants";
 
-const BicycleList = ({displayedBicycles, searchHandler, toggleShowAllBicycles, deleteBicycle, showInfo}) =>
+const BicycleList = ({bicycles, searchHandler, deleteBicycle, showInfo}) =>
 
     <div>
-        <h4>{toggleShowAllBicycles ? SHOW_TOP_FIVE_BICYCLES : SHOW_ALL_BICYCLES}</h4>
         <Table striped bordered condensed hover>
             <thead>
             <tr>
@@ -18,7 +17,7 @@ const BicycleList = ({displayedBicycles, searchHandler, toggleShowAllBicycles, d
             </thead>
             <tbody>
             {
-                displayedBicycles.map((item, index) => <Bicycle key={index}
+                bicycles.map((item, index) => <Bicycle key={index}
                                                                 bicycle={item}
                                                                 deleteBicycle={deleteBicycle}
                                                                 showInfo={showInfo}

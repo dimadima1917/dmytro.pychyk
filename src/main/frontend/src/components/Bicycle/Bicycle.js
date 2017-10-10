@@ -1,6 +1,7 @@
 import React, {} from "react";
 import {Button} from "react-bootstrap";
 
+
 const Bicycle = ({bicycle, deleteBicycle, showInfo}) =>
 
     <tr>
@@ -13,5 +14,6 @@ const Bicycle = ({bicycle, deleteBicycle, showInfo}) =>
             <Button bsStyle="danger" onClick={() => deleteBicycle(bicycle.productId)}>Delete</Button>
         </td>
     </tr>
+;
 
 export default Bicycle;

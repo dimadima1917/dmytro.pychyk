@@ -1,11 +1,12 @@
-import React, {Component} from "react";
+import React, {Component, PropTypes} from "react";
 import BicycleList from "./Bicycle/BicycleList";
-import {Button, ButtonToolbar, Col, FormControl, FormGroup, Grid, Navbar, Row,} from "react-bootstrap";
-import {loadAllBicyclesRequest, load5MostPopularBicyclesRequest, createBicycleRequest, deleteBicycleRequest} from "../api/bikes";
-import {SHOW_ALL_BICYCLES, SHOW_TOP_FIVE_BICYCLES} from "../constants/bikeConstants";
+import {Button, ButtonToolbar, Col, FormControl, FormGroup, Grid, Navbar, Row} from "react-bootstrap";
 import CreateBikeModal from "../modals/CreateBikeModal";
 import InfoBicycleModal from "../modals/InfoBicycleModal";
 import Notifications from "./Notifications";
+
+import {loadFiveMostPopularBicycles, loadOfFoundBicycles, deleteBicycle} from './Bicycle/actions/bicycles';
+import {connect} from "react-redux";
 
 class Container extends Component {
 
@@ -15,76 +16,29 @@ class Container extends Component {
         this.state = {
             bicycle: {},
             bicycles: [],
-            displayedBicycles: [],
-            toggleShowAllBicycles: false,
             showCreateModal: false,
             showModalInfo: false,
             showNotifications: false
         };
-        this.loadAllBicycles = this.loadAllBicycles.bind(this);
     }
 
     componentDidMount() {
-        this.load5MostPopularBicycles();
+        this.props.loadFiveMostPopularBicycles();
     }
 
-    reloadAllBicycles() {
-        this.loadAllBicycles();
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.bicyclesShouldBeReloaded && !this.props.bicyclesShouldBeReloaded) {
+            this.reloadBicycles();
+        }
     }
 
-    reloadFiveMostPopularBicycles() {
-        this.load5MostPopularBicycles();
-    }
-
-    loadAllBicycles() {
-        loadAllBicyclesRequest()
-            .then((bicycles) => { //successCallback
-                this.setState({
-                    bicycles: bicycles,
-                    displayedBicycles: bicycles
-                });
-                return null;
-            })
-            .catch((error) => { //error callback
-                console.error(error);
-            });
-    }
-
-    load5MostPopularBicycles() {
-        load5MostPopularBicyclesRequest()
-            .then((bicycles) => { //successCallback
-                this.setState({
-                    bicycles: bicycles,
-                    displayedBicycles: bicycles
-                });
-                return null;
-            })
-            .catch((error) => { //error callback
-                console.error(error);
-            });
+    reloadBicycles() {
+        this.props.loadFiveMostPopularBicycles();
     }
 
     showCreateModal() {
         this.setState({
             showCreateModal: true
-        });
-    }
-
-    searchBikes(searchQuery) {
-        if (this.state.bicycle) {
-            return this.state.bicycles.filter(function (el) {
-                const searchValue = el.name.toLowerCase().trim();
-                return searchValue.indexOf(searchQuery) !== -1;
-            });
-        } else {
-            return [];
-        }
-    }
-
-    searchHandler(e) {
-        const searchQuery = e.target.value.toLowerCase().trim();
-        this.setState({
-            displayedBicycles: this.searchBikes(searchQuery)
         });
     }
 
@@ -95,60 +49,21 @@ class Container extends Component {
         })
     }
 
-    handleClick() {
-        if (this.state.toggleShowAllBicycles) {
-            this.setState({
-                    toggleShowAllBicycles: false,
-                    displayedBicycles: this.state.bicycles
-                }
-            );
-            this.load5MostPopularBicycles()
-        } else {
-            this.setState({
-                    toggleShowAllBicycles: true,
-                    displayedBicycles: this.state.bicycles
-                }
-            );
-            this.loadAllBicycles()
-        }
-    }
-
-    createBicycleHandler(bicycle) {
-        if (bicycle) {
-            createBicycleRequest(bicycle)
-                .then((response) => {
-                    if (response === -1) {
-                        this.setState(
-                            {
-                                showNotifications: true,
-                            }
-                        )
-                    } else {
-                        this.setState(
-                            {
-                                showNotifications: false
-                            })
-                        this.reloadAllBicycles()
-                    }
-                })
-        }
-    }
-
-    deleteBicycleHandler(bicyclesId) {
-        if (this.state.toggleShowAllBicycles) {
-            deleteBicycleRequest(bicyclesId)
-                .then((response) => this.reloadAllBicycles());
-        } else {
-            deleteBicycleRequest(bicyclesId)
-                .then((response) => this.reloadFiveMostPopularBicycles());
-        }
-    }
-
     showModalInfo(bike) {
         this.setState({
             bicycle: bike,
             showModalInfo: true
         });
+    }
+
+    searchHandler() {
+        if (this.state.SubstringRef.value) {
+            this.props.loadOfFoundBicycles(this.state.SubstringRef.value);
+        }
+    }
+
+    showTopFive() {
+        this.props.loadFiveMostPopularBicycles();
     }
 
     render() {
@@ -161,15 +76,14 @@ class Container extends Component {
                                     onClick={this.showCreateModal.bind(this)}>
                                 CREATE NEW BICYCLES
                             </Button>
-                            <Button bsStyle="default" type="button"
-                                    onClick={this.handleClick.bind(this)}>
-                                {this.state.toggleShowAllBicycles ? SHOW_ALL_BICYCLES : SHOW_TOP_FIVE_BICYCLES}
-                            </Button>
+                            <Button bsStyle="default" onClick={this.showTopFive.bind(this)}>TOP 5</Button>
                         </ButtonToolbar>
                     </Navbar.Header>
                     <Navbar.Form pullRight>
                         <FormGroup>
-                            <FormControl type="text" placeholder="Search" onChange={this.searchHandler.bind(this)}/>
+                            <FormControl type="text" placeholder="Text"
+                                         inputRef={ref => this.state.SubstringRef = ref}/>
+                            <Button type="submit" onClick={this.searchHandler.bind(this)}>Search</Button>
                         </FormGroup>
                     </Navbar.Form>
                 </Navbar>
@@ -178,7 +92,6 @@ class Container extends Component {
 
                 <CreateBikeModal showModal={this.state.showCreateModal}
                                  onClose={this.onCloseModal.bind(this)}
-                                 createBicycleHandler={this.createBicycleHandler.bind(this)}
                 />
 
                 <InfoBicycleModal showModal={this.state.showModalInfo}
@@ -187,11 +100,9 @@ class Container extends Component {
                 />
                 <Row>
                     <Col md={12}>
-                        <BicycleList displayedBicycles={this.state.displayedBicycles}
-                                     searchHandler={this.searchHandler.bind(this)}
-                                     toggleShowAllBicycles={this.state.toggleShowAllBicycles}
-                                     deleteBicycle={this.deleteBicycleHandler.bind(this)}
+                        <BicycleList bicycles={this.props.bicycles}
                                      showInfo={this.showModalInfo.bind(this)}
+                                     deleteBicycle={this.props.deleteBicycle}
                         />
                     </Col>
                 </Row>
@@ -200,4 +111,19 @@ class Container extends Component {
     }
 }
 
-export default Container;
+const mapStateToProps = (state) => {
+    return {
+        bicycles: state.bicyclesReducers.bicycles,
+        bicyclesShouldBeReloaded: state.bicyclesReducers.bicyclesShouldBeReloaded
+    };
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loadFiveMostPopularBicycles: () => dispatch(loadFiveMostPopularBicycles()),
+        loadOfFoundBicycles: (substring) => dispatch(loadOfFoundBicycles(substring)),
+        deleteBicycle: (bicycleID) => dispatch(deleteBicycle(bicycleID))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Container);

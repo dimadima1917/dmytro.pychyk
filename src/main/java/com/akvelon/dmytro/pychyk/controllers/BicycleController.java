@@ -21,7 +21,6 @@ public class BicycleController {
         return bicycleService.selectAll();
     }
 
-
     @RequestMapping(value = "/search/{id}", method = RequestMethod.GET)
     public Bicycle searchById(@PathVariable("id") long id) {
         return bicycleService.searchById(id);
