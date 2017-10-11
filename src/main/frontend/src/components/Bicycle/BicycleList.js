@@ -1,5 +1,5 @@
 import React, {} from "react";
-import {Table,} from "react-bootstrap";
+import {Table} from "react-bootstrap";
 import Bicycle from "./Bicycle";
 
 const BicycleList = ({bicycles, searchHandler, deleteBicycle, showInfo}) =>

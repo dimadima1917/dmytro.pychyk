@@ -100,23 +100,26 @@ class Container extends Component {
             <Grid fluid>
                 <Navbar fluid>
                     <Navbar.Header>
-                        <ButtonToolbar>
-                            <Button bsStyle="primary" type="button"
-                                    onClick={this.showCreateModal.bind(this)}>
-                                CREATE NEW BICYCLES
-                            </Button>
-                            <Button bsStyle="default" onClick={this.showTopFive.bind(this)}>TOP 5</Button>
-                        </ButtonToolbar>
+                            <ButtonToolbar>
+                                <Button bsStyle="primary" type="button"
+                                        onClick={this.showCreateModal.bind(this)}>
+                                    CREATE NEW BICYCLES
+                                </Button>
+                                <Button bsStyle="default" onClick={this.showTopFive.bind(this)}>TOP 5</Button>
+                            </ButtonToolbar>
                     </Navbar.Header>
-                    <Navbar.Form pullRight>
-                        <FormGroup validationState={this.getValidationState()}>
-                            <FormControl type="text" placeholder="Input Text"
-                                         inputRef={ref => this.state.SubstringRef = ref}
-                                         onChange={this.handleChange.bind(this)}
-                            />
+                    <Navbar.Collapse>
+                        <Navbar.Form pullRight>
+                            <FormGroup validationState={this.getValidationState()}>
+                                <FormControl type="text" placeholder="Input Text"
+                                             inputRef={ref => this.state.SubstringRef = ref}
+                                             onChange={this.handleChange.bind(this)}
+                                />
+                            </FormGroup>
+                            {' '}
                             <Button type="submit" onClick={this.searchHandler.bind(this)}>Search</Button>
-                        </FormGroup>
-                    </Navbar.Form>
+                        </Navbar.Form>
+                    </Navbar.Collapse>
                 </Navbar>
 
                 <Notifications showNotifications={this.props.showNotifications}/>
