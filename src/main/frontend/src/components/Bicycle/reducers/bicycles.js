@@ -17,7 +17,7 @@ function bicyclesReducers(state = initialState, action) {
         }
         case types.BICYCLES_SHOULD_BE_RELOADED: {
             return updateObject(state, {
-                bicyclesShouldBeReloaded: action.bicyclesShouldBeReloaded
+                    bicyclesShouldBeReloaded: action.bicyclesShouldBeReloaded
                 }
             )
         }
@@ -28,7 +28,13 @@ function bicyclesReducers(state = initialState, action) {
         }
         case types.DELETE_BICYCLE: {
             return updateObject(state, {
-                bicyclesShouldBeReloaded:true
+                bicyclesShouldBeReloaded: action.bicyclesShouldBeReloaded
+            })
+        }
+        case types.CREATE_BICYCLE: {
+            return updateObject(state, {
+                showNotifications: action.showNotification,
+                bicyclesShouldBeReloaded: action.bicyclesShouldBeReloaded
             })
         }
         default:

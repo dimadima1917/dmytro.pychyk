@@ -5,8 +5,12 @@ import CreateBikeModal from "../modals/CreateBikeModal";
 import InfoBicycleModal from "../modals/InfoBicycleModal";
 import Notifications from "./Notifications";
 
-import {loadFiveMostPopularBicycles, loadOfFoundBicycles, deleteBicycle} from './Bicycle/actions/bicycles';
-import {createBicycleRequest} from '../api/bikes'
+import {
+    loadFiveMostPopularBicycles,
+    loadOfFoundBicycles,
+    deleteBicycle,
+    createBicycle
+} from './Bicycle/actions/bicycles';
 import {connect} from "react-redux";
 
 class Container extends Component {
@@ -19,7 +23,6 @@ class Container extends Component {
             bicycles: [],
             showCreateModal: false,
             showModalInfo: false,
-            showNotifications: false
         };
     }
 
@@ -70,24 +73,9 @@ class Container extends Component {
 
     createBicycleHandler(bicycle) {
         if (bicycle) {
-            createBicycleRequest(bicycle)
-                .then((response) => {
-                    if (response === -1) {
-                        this.setState(
-                            {
-                                showNotifications: true,
-                            }
-                        )
-                    } else {
-                        this.setState(
-                            {
-                                showNotifications: false
-                            });
-                    }
-                })
+            this.props.createBicycle(bicycle);
         }
     }
-
 
     render() {
         return (
@@ -111,7 +99,7 @@ class Container extends Component {
                     </Navbar.Form>
                 </Navbar>
 
-                <Notifications showNotifications={this.state.showNotifications}/>
+                <Notifications showNotifications={this.props.showNotifications}/>
 
                 <CreateBikeModal showModal={this.state.showCreateModal}
                                  onClose={this.onCloseModal.bind(this)}
@@ -138,7 +126,8 @@ class Container extends Component {
 const mapStateToProps = (state) => {
     return {
         bicycles: state.bicyclesReducers.bicycles,
-        bicyclesShouldBeReloaded: state.bicyclesReducers.bicyclesShouldBeReloaded
+        bicyclesShouldBeReloaded: state.bicyclesReducers.bicyclesShouldBeReloaded,
+        showNotifications:state.bicyclesReducers.showNotifications
     };
 };
 
@@ -146,7 +135,8 @@ const mapDispatchToProps = (dispatch) => {
     return {
         loadFiveMostPopularBicycles: () => dispatch(loadFiveMostPopularBicycles()),
         loadOfFoundBicycles: (substring) => dispatch(loadOfFoundBicycles(substring)),
-        deleteBicycle: (bicycleID) => dispatch(deleteBicycle(bicycleID))
+        deleteBicycle: (bicycleID) => dispatch(deleteBicycle(bicycleID)),
+        createBicycle: (bicycle) => dispatch(createBicycle(bicycle))
     }
 };
 

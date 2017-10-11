@@ -33,9 +33,7 @@ public class BicycleController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
-    public boolean delete(@PathVariable("id") int id) {
-        return bicycleService.delete(id);
-    }
+    public boolean delete(@PathVariable("id") int id) {return bicycleService.delete(id);}
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     public long add(@RequestBody Bicycle bicycle) {

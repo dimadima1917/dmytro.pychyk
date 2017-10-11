@@ -25,7 +25,7 @@ public class ServiceBicycleImplTest {
     @InjectMocks
     ServiceBicycleImpl bicycleService;
 
-    Bicycle bicycle;
+    private Bicycle bicycle;
 
     Map<Integer, Bicycle> bicycleMap = new LinkedHashMap<>();
 

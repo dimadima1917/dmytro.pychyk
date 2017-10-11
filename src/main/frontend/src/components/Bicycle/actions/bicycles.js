@@ -34,6 +34,14 @@ export const deletedBicycle = (bicycleID) => {
     }
 };
 
+export const create = (bicycle, showNotifications) => {
+    return {
+        type: types.CREATE_BICYCLE,
+        bicycle,
+        showNotification: showNotifications
+    }
+};
+
 export const loadFiveMostPopularBicycles = () => {
     return (dispatch, getState) => {
         if (getState().bicyclesReducers.isBicyclesLoading) {
@@ -66,6 +74,21 @@ export const deleteBicycle = (bicycleID) => {
     return (dispatch) => {
         deleteBicycleRequest(bicycleID)
             .then(response => dispatch(deletedBicycle(bicycleID)))
+            .then(response => dispatch(bicyclesShouldBeReloaded(true)))
+            .catch(e => console.error(e))
+    }
+};
+
+export const createBicycle = (bicycle) => {
+    return (dispatch) => {
+        createBicycleRequest(bicycle)
+            .then(response => {
+                if (response === -1) {
+                    dispatch(create(bicycle, true))
+                } else {
+                    dispatch(create(bicycle, false))
+                }
+            })
             .then(response => dispatch(bicyclesShouldBeReloaded(true)))
             .catch(e => console.error(e))
     }

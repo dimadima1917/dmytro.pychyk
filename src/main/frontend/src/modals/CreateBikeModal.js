@@ -10,7 +10,6 @@ import Form from "react-bootstrap/es/Form";
 import ModalFooter from "react-bootstrap/es/ModalFooter";
 import Button from "react-bootstrap/es/Button";
 
-
 class CreateBikeModal extends Component {
 
     constructor(props) {
