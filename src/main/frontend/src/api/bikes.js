@@ -21,7 +21,7 @@ export const loadOfFoundBicyclesRequest = (substring) => {
         .then(response => {
             return response.data
         })
-}
+};
 
 export const createBicycleRequest = (bicycle) => {
     return axios.post(CREATE_BICYCLE_URL, bicycle).then(response => {

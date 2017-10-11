@@ -20,6 +20,7 @@ class Container extends Component {
 
         this.state = {
             bicycle: {},
+            substring: '',
             bicycles: [],
             showCreateModal: false,
             showModalInfo: false,
@@ -37,7 +38,12 @@ class Container extends Component {
     }
 
     reloadBicycles() {
-        this.props.loadFiveMostPopularBicycles();
+        if (this.state.SubstringRef.value) {
+            this.props.loadOfFoundBicycles(this.state.SubstringRef.value.trim());
+        } else {
+            this.props.loadFiveMostPopularBicycles();
+        }
+
     }
 
     showCreateModal() {
@@ -77,10 +83,22 @@ class Container extends Component {
         }
     }
 
+    getValidationState() {
+        const length = this.state.substring.length;
+        if (length === 0) return 'error';
+        else if (length > 0) return 'success';
+    }
+
+    handleChange() {
+        this.setState({
+            substring: this.state.SubstringRef.value.trim()
+        })
+    }
+
     render() {
         return (
             <Grid fluid>
-                <Navbar fluid inverse>
+                <Navbar fluid>
                     <Navbar.Header>
                         <ButtonToolbar>
                             <Button bsStyle="primary" type="button"
@@ -91,9 +109,11 @@ class Container extends Component {
                         </ButtonToolbar>
                     </Navbar.Header>
                     <Navbar.Form pullRight>
-                        <FormGroup>
-                            <FormControl type="text" placeholder="Text"
-                                         inputRef={ref => this.state.SubstringRef = ref}/>
+                        <FormGroup validationState={this.getValidationState()}>
+                            <FormControl type="text" placeholder="Input Text"
+                                         inputRef={ref => this.state.SubstringRef = ref}
+                                         onChange={this.handleChange.bind(this)}
+                            />
                             <Button type="submit" onClick={this.searchHandler.bind(this)}>Search</Button>
                         </FormGroup>
                     </Navbar.Form>
@@ -127,7 +147,7 @@ const mapStateToProps = (state) => {
     return {
         bicycles: state.bicyclesReducers.bicycles,
         bicyclesShouldBeReloaded: state.bicyclesReducers.bicyclesShouldBeReloaded,
-        showNotifications:state.bicyclesReducers.showNotifications
+        showNotifications: state.bicyclesReducers.showNotifications
     };
 };
 

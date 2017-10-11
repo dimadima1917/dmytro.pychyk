@@ -1,8 +1,5 @@
 import React, {Component} from "react";
-import {
-    Button, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader,
-    ModalTitle
-} from "react-bootstrap";
+import {Button, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle} from "react-bootstrap";
 
 class InfoBicycleModal extends Component {
     constructor(props) {

@@ -1,7 +1,6 @@
 import React, {} from "react";
 import {Button} from "react-bootstrap";
 
-
 const Bicycle = ({bicycle, deleteBicycle, showInfo}) =>
 
     <tr>
