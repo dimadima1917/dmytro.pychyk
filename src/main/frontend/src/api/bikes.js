@@ -4,7 +4,6 @@ const GET = 'GET';
 const PUT = 'PUT';
 const POST = 'POST';
 const DELETE = 'DELETE';
-const GET_ALL_BICYCLES_URL = "http://localhost:8080/showAll";
 const GET_FOUND_BICYCLES_URL = "http://localhost:8080/searchBySubstring/";
 const GET_5_MOST_POPULAR_BICYCLES_URL = "http://localhost:8080/top5";
 const CREATE_BICYCLE_URL = "http://localhost:8080/create";

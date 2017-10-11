@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,10 +30,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(MockitoJUnitRunner.class)
 public class BicycleControllerTest {
 
-    private List<Bicycle> bicycleList;
-    Bicycle bicycle;
+    private Bicycle bicycle;
 
-    Gson gson = new GsonBuilder().create();
+    private List<Bicycle> bicycleList;
+
+    private Gson gson = new GsonBuilder().create();
 
     @Autowired
     MockMvc mockMvc;
@@ -48,13 +48,10 @@ public class BicycleControllerTest {
     @Before
     public void init() {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(bicycleController)
-                .build();
+        mockMvc = MockMvcBuilders.standaloneSetup(bicycleController).build();
         bicycle = new Bicycle(1, "Bike1", "Bike1", "Bike1", 1, "Bike1", "Bike1");
-        Bicycle [] arrayBicycle = {bicycle};
-        bicycleList = Arrays.asList(arrayBicycle);
-
+        Bicycle[] arrayBicycles = {bicycle};
+        bicycleList = Arrays.asList(arrayBicycles);
     }
 
     @Test
@@ -65,7 +62,6 @@ public class BicycleControllerTest {
         mockMvc.perform(get("/showAll").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonResponse));
-
         verify(bicycleService).selectAll();
     }
 
@@ -84,7 +80,7 @@ public class BicycleControllerTest {
     public void addTest_notNull_returnPositiveNumber() throws Exception {
         when(bicycleService.add(bicycle)).thenReturn((long) bicycle.getProductId());
         String jsonRequest = gson.toJson(bicycle);
-        String jsonResponse = gson.toJson(bicycleService.add(bicycle));//gson.toJson(bicycleService.add(bicycle1));
+        String jsonResponse = gson.toJson(bicycle.getProductId());
 
         mockMvc.perform(post("/create").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -95,26 +91,22 @@ public class BicycleControllerTest {
     }
 
     @Test
-    public void addTest_null_willWorkCorrectly() throws Exception {
-        when(bicycleService.add(null)).thenReturn((long) -1);
-        String jsonRequest = gson.toJson(bicycle);
-        String jsonResponse = gson.toJson(bicycleService.add(bicycle));
+    public void addTest_null_fail() throws Exception {
+        String jsonRequest = gson.toJson(null);
 
         mockMvc.perform(post("/create").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andExpect(content().json(jsonResponse));
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
     public void delete() throws Exception {
-
         when(bicycleService.delete(bicycle.getProductId())).thenReturn(true);
-
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/delete/{productId}", bicycle.getProductId()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"));
+
+        verify(bicycleService).delete(bicycle.getProductId());
     }
 
 
@@ -122,11 +114,42 @@ public class BicycleControllerTest {
     public void searchById_existsInDB_returnBicycle() throws Exception {
         when(bicycleService.searchById(bicycle.getProductId())).thenReturn(bicycle);
 
-        String jsonResponse = gson.toJson(bicycleService.searchById(bicycle.getProductId()));
+        String jsonResponse = gson.toJson(bicycle);
 
         mockMvc.perform(get("/search/{id}", bicycle.getProductId()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType("application/json;charset=UTF-8"))
                 .andExpect(content().json(jsonResponse));
+
+        verify(bicycleService).searchById(bicycle.getProductId());
+    }
+
+    @Test
+    public void searchByString_existsInDB_returnBicycle() throws Exception {
+        String substringRequest = "mou";
+
+        when(bicycleService.searchByString(substringRequest)).thenReturn(bicycleList);
+
+        String jsonResponse = gson.toJson(bicycleList);
+
+        mockMvc.perform(get("/searchBySubstring/{string}", substringRequest).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"))
+                .andExpect(content().json(jsonResponse));
+
+        verify(bicycleService).searchByString(substringRequest);
+    }
+
+    @Test
+    public void update() throws Exception {
+        when(bicycleService.update(bicycle)).thenReturn(true);
+
+        String jsonRequest = gson.toJson(bicycle);
+
+        mockMvc.perform(post("/update").content(jsonRequest).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType("application/json;charset=UTF-8"));
+
+        verify(bicycleService).update(bicycle);
     }
 }

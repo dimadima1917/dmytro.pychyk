@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from "react";
+import React, {Component} from "react";
 import BicycleList from "./Bicycle/BicycleList";
 import {Button, ButtonToolbar, Col, FormControl, FormGroup, Grid, Navbar, Row} from "react-bootstrap";
 import CreateBikeModal from "../modals/CreateBikeModal";
@@ -6,6 +6,7 @@ import InfoBicycleModal from "../modals/InfoBicycleModal";
 import Notifications from "./Notifications";
 
 import {loadFiveMostPopularBicycles, loadOfFoundBicycles, deleteBicycle} from './Bicycle/actions/bicycles';
+import {createBicycleRequest} from '../api/bikes'
 import {connect} from "react-redux";
 
 class Container extends Component {
@@ -57,14 +58,36 @@ class Container extends Component {
     }
 
     searchHandler() {
-        if (this.state.SubstringRef.value) {
-            this.props.loadOfFoundBicycles(this.state.SubstringRef.value);
+        const substring = this.state.SubstringRef.value.trim();
+        if (substring) {
+            this.props.loadOfFoundBicycles(substring);
         }
     }
 
     showTopFive() {
         this.props.loadFiveMostPopularBicycles();
     }
+
+    createBicycleHandler(bicycle) {
+        if (bicycle) {
+            createBicycleRequest(bicycle)
+                .then((response) => {
+                    if (response === -1) {
+                        this.setState(
+                            {
+                                showNotifications: true,
+                            }
+                        )
+                    } else {
+                        this.setState(
+                            {
+                                showNotifications: false
+                            });
+                    }
+                })
+        }
+    }
+
 
     render() {
         return (
@@ -92,6 +115,7 @@ class Container extends Component {
 
                 <CreateBikeModal showModal={this.state.showCreateModal}
                                  onClose={this.onCloseModal.bind(this)}
+                                 createBicycleHandler={this.createBicycleHandler.bind(this)}
                 />
 
                 <InfoBicycleModal showModal={this.state.showModalInfo}
