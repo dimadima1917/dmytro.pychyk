@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-            string(defaultValue: getBranchName(), description: '', name: 'userFlag')
+            listGitBranches(name: 'branches', remoteURL: 'https://github.com/dimadima1917/dmytro.pychyk.git')
     }
 
     environment {
@@ -16,12 +16,5 @@ pipeline {
                 sh 'printenv'
             }
         }
-    }
-}
-
-def getBranchName() {
-    script {
-        def branchName = sh script: 'echo branchName'
-        return branchName
     }
 }
