@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-            booleanParam(defaultValue: true, description: '', name: 'userFlag')
+            string(defaultValue: getBranchName(), description: '', name: 'userFlag')
     }
 
     environment {
@@ -16,5 +16,12 @@ pipeline {
                 sh 'printenv'
             }
         }
+    }
+}
+
+def getBranchName() {
+    script {
+        def branchName = sh script: 'echo branchName'
+        return branchName
     }
 }
