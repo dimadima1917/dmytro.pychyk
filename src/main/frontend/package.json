@@ -28,7 +28,7 @@
     "webpack-dev-server": "^2.4.1"
   },
   "dependencies": {
-    "axios": "^0.16.2",
+    "axios": "^0.19.2",
     "bootstrap": "^3.3.7",
     "lodash": "^4.17.4",
     "prop-types": "^15.5.10",
