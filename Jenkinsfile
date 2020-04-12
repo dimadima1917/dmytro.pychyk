@@ -1,6 +1,6 @@
 node {
     parameters {
-        String(name: 'DEFAULT_BRANCH', defaultValue: '', description: '')
+        string(name: 'DEFAULT_BRANCH', defaultValue: '', description: '')
     }
     stage('Pulling source code') {
 //        dir('source-code') {           
